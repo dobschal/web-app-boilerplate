@@ -56,6 +56,20 @@ server {
 
 ## Server
 
+### Database Transaction
+
+Transaction allow automatical rollbacks of throw for save database handling.
+
+Example:
+```javascript
+await transaction(async (query) => {
+    await query("INSERT INTO user SET ?", {
+        email: "test4"
+    });
+    throw new Error("Something"); // will rollback the query above
+});
+```
+
 ### Routing
 
 All route handlers should be in `src/server/routes`. The file name determines the URL path for the route handler.
@@ -77,13 +91,14 @@ module.exports = {
 
 ## Includes
 
- - [ ] MySQL Database Setup
- - [ ] MySQL Database Transaction Rollbacks
- - [ ] MySQL Database Migrations
+ - [x] MySQL Database Setup
+ - [x] MySQL Database Transaction Rollbacks
+ - [x] MySQL Database Migrations
  - [x] Eslint Setup
  - [x] Websocket Setup with SocketIO
- - [ ] Deployment with PM2
  - [x] Server Side Automatic router
+ - [ ] .env support
+ - [ ] Deployment with PM2
  - [ ] User authentication JWT
  - [ ] User authentication roles
  - [ ] User authentication websocket
@@ -98,3 +113,4 @@ module.exports = {
  - [ ] Client Side Router
  - [ ] Server/Client Shared Modules
  - [ ] DateUtil
+ - [ ] Email Send Service

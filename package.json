@@ -1,0 +1,23 @@
+{
+  "name": "chat-server",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "build:watch": "parcel watch src/client/index.html --out-dir build/public",
+    "build": "rm -rf build/public && parcel build src/client/index.html --out-dir build/public",
+    "start": "node src/server/index.js"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "express": "^4.18.2",
+    "socket.io": "^4.6.1",
+    "socket.io-client": "^4.6.1"
+  },
+  "devDependencies": {
+    "eslint": "^8.36.0",
+    "parcel-bundler": "^1.12.5"
+  }
+}

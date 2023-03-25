@@ -54,6 +54,27 @@ server {
 }
 ```
 
+## Server
+
+### Routing
+
+All route handlers should be in `src/server/routes`. The file name determines the URL path for the route handler.
+E.g. `src/server/routes/login.js` will listen to request coming on `/api/login`. 
+Inside the route handler you can specify the HTTP method and subpaths. 
+
+Example:
+```javascript
+// users.js
+module.exports = {
+    "POST /address": (req, res) => { // will listen to POST requests coming on "/api/users/address"
+        // ...
+        res.send({
+            message: "Yeah"
+        });
+    }
+};
+```
+
 ## Includes
 
  - [ ] MySQL Database Setup

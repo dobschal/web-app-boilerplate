@@ -1,5 +1,11 @@
 module.exports.HTTP = {
-    baseUrl: "https://119uib-8080.csb.app",
+
+    /**
+     * Set this value on app start via `HTTP.baseUrl = "https://...";`
+     * @type {string}
+     */
+    baseUrl: "",
+
     async post(url = "", data = {}) {
         const response = await fetch(this.baseUrl + url, {
             method: "POST",
@@ -8,8 +14,9 @@ module.exports.HTTP = {
             },
             body: JSON.stringify(data)
         });
-        return response.json(); // parses JSON response into native JavaScript objects
+        return response.json();
     },
+
     async get(url = "") {
         const response = await fetch(this.baseUrl + url, {
             method: "GET",
@@ -17,6 +24,6 @@ module.exports.HTTP = {
                 "Content-Type": "application/json"
             }
         });
-        return response.json(); // parses JSON response into native JavaScript objects
+        return response.json();
     }
 };

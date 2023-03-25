@@ -6,7 +6,8 @@
   "scripts": {
     "build:watch": "parcel watch src/client/index.html --out-dir build/public",
     "build": "rm -rf build/public && parcel build src/client/index.html --out-dir build/public",
-    "start": "node src/server/index.js"
+    "start": "node src/server/index.js",
+    "lint": "eslint src/ --fix"
   },
   "keywords": [],
   "author": "",
@@ -17,7 +18,7 @@
     "socket.io-client": "^4.6.1"
   },
   "devDependencies": {
-    "eslint": "^8.36.0",
+    "eslint": "^7.32.0",
     "parcel-bundler": "^1.12.5"
   }
 }

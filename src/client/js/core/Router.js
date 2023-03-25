@@ -1,4 +1,4 @@
-export const Router = {
+module.exports.Router = {
     routes: {},
     activePath: undefined,
     cache: {},

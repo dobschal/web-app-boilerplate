@@ -1,4 +1,4 @@
-export const HTTP = {
+module.exports.HTTP = {
     baseUrl: "https://119uib-8080.csb.app",
     async post(url = "", data = {}) {
         const response = await fetch(this.baseUrl + url, {

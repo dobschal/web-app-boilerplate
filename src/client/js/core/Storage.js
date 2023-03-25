@@ -1,4 +1,4 @@
-export const Storage = {
+module.exports.Storage = {
     save(key, value) {
         if (typeof value === "string") {
             window.localStorage.setItem(key, value);

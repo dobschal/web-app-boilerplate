@@ -3,7 +3,7 @@ const { Box, Headline } = require("./core/UI.js");
 
 console.log("Yeah");
 
-Box(Headline("Yeah 2!"));
+Box(Headline("Nice!"));
 
 var socket = io();
 

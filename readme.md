@@ -89,28 +89,39 @@ module.exports = {
 };
 ```
 
-## Includes
+## Features Included
 
  - [x] MySQL Database Setup
  - [x] MySQL Database Transaction Rollbacks
  - [x] MySQL Database Migrations
  - [x] Eslint Setup
  - [x] Websocket Setup with SocketIO
- - [x] Server Side Automatic router
- - [ ] .env support
+ - [x] Server side autoload route handlers
+ - [x] .env support
  - [ ] Deployment with PM2
+ - [ ] PM2 Load Balancing
+ - [ ] PM2 Load Balancing with Websockets
  - [ ] User authentication JWT
  - [ ] User authentication roles
  - [ ] User authentication websocket
  - [ ] Test Setup with Mocks (e.g. Database)
- - [ ] SCSS Support
  - [ ] TypeScript Support
+ - [ ] Email send Service
+ - [ ] K6 stress tests
+ - [ ] Error Handling
+ - [ ] Localisation
+
+ - [ ] Server/Client Shared Modules
+ - [ ] DateUtil
+ - [ ] Models
+
+ - [ ] SCSS Support
  - [ ] Declarative UI Framework
  - [ ] Declarative UI Framework List
+ - [ ] Declarative UI Framework File Input
+ - [ ] Declarative UI Framework Select/Options
  - [ ] Declarative UI Framework Table
  - [ ] Declarative UI Framework Image
  - [ ] Declarative UI Framework TextEditor
  - [ ] Client Side Router
- - [ ] Server/Client Shared Modules
- - [ ] DateUtil
- - [ ] Email Send Service
+ - [ ] Client Side Router Params

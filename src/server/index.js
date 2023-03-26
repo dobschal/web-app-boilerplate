@@ -1,3 +1,4 @@
+require("dotenv").config();
 const express = require("express");
 const http = require("http");
 const path = require("path");
@@ -50,8 +51,8 @@ async function setup() {
         });
     });
 
-    server.listen(3002, () => {
-        console.log("\n[server/index] \t🚀 Server started on port 3002.");
+    server.listen(process.env.PORT, () => {
+        console.log("\n[server/index] \t🚀 Server started on port " + process.env.PORT);
     });
 }
 

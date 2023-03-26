@@ -3,10 +3,10 @@ const fs = require("fs");
 const path = require("path");
 const pool = mysql.createPool({
     connectionLimit: 10,
-    host: "localhost",
-    user: "root",
-    password: "root",
-    database: "chat"
+    host: process.env.DATABASE_HOST,
+    user: process.env.DATABASE_USER,
+    password: process.env.DATABASE_PASSWORD,
+    database: process.env.DATABASE_NAME
 });
 
 function _beginTransaction(connection) {

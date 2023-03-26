@@ -4,21 +4,20 @@ const { Box, Headline } = require("./core/UI.js");
 
 HTTP.baseUrl = "https://chat.dobschal.eu/api";
 
-HTTP.post("/login", {
-    yeah: "uuuh"
+HTTP.post("/auth/login", {
+    email: "sascha@dobschal.eu"
 }).then(response => {
     console.log("Reponse: ", response);
 });
 
-HTTP.get("").then(response => {
+HTTP.get("/version").then(response => {
     console.log("Reponse: ", response);
 });
 
-console.log("Yeah");
-
 Box(Headline("Nice!"));
 
-var socket = io();
+
+const socket = io();
 
 socket.emit("chat message", "hey");
 

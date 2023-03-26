@@ -44,6 +44,11 @@ function getConnection() {
     });
 }
 
+/**
+ * @param {string} statement
+ * @param {Array} params
+ * @returns {Promise<Array>}
+ */
 function query(statement, params = []) {
     const connection = this.connection || pool;
     return new Promise((resolve, reject) => {

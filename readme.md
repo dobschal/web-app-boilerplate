@@ -98,15 +98,18 @@ module.exports = {
  - [x] Websocket Setup with SocketIO
  - [x] Server side autoload route handlers
  - [x] .env support
+ - [x] Version API route
+ - [x] Email send Service
  - [ ] Deployment with PM2
  - [ ] PM2 Load Balancing
  - [ ] PM2 Load Balancing with Websockets
+ - [x] User OTP Login
+ - [ ] User OTP verfication
  - [ ] User authentication JWT
  - [ ] User authentication roles
  - [ ] User authentication websocket
  - [ ] Test Setup with Mocks (e.g. Database)
  - [ ] TypeScript Support
- - [ ] Email send Service
  - [ ] K6 stress tests
  - [ ] Error Handling
  - [ ] Localisation

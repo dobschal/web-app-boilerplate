@@ -1,5 +1,10 @@
 const { query } = require("../core/database.js");
 
+const UserRoles = {
+    user: "user",
+    admin: "admin"
+};
+
 module.exports.UserService = {
     async getUserById(id) {
         const results = await query("SELECT * FROM user WHERE id = ?", [id]);
@@ -10,7 +15,7 @@ module.exports.UserService = {
         return results[0];
     },
     async insertUser(email, otp) {
-        const results = await query("INSERT INTO user SET ?", { email, otp });
+        const results = await query("INSERT INTO user SET ?", { email, otp, roles: UserRoles.user });
         return this.getUserById(results.insertId);
     },
     async setOtp(userId, otp) {

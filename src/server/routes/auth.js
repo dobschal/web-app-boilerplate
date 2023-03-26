@@ -1,13 +1,12 @@
 const { sendMail } = require("../core/email.js");
-const { isNonEmptyString } = require("../core/type.js");
+const { expectType } = require("../core/type.js");
 const { AuthService } = require("../service/AuthService.js");
 const { UserService } = require("../service/UserService.js");
 
 module.exports = {
+
     "POST /login": async (req, res) => {
-        if (!isNonEmptyString(req.body.email)) {
-            throw new Error("400 Email missing");
-        }
+        expectType(req.body, { email: "string" });
         const otp = AuthService.generateOtp();
         let user = await UserService.getUserByEmail(req.body.email);
         if (!user) {
@@ -22,8 +21,16 @@ module.exports = {
     },
 
     "POST /verify": async (req, res) => {
-        // TODO: set user as active if token is valid
+        expectType(req.body, {
+            email: "string",
+            otp: "string"
+        });
+        const user = await UserService.getUserByEmail(req.body.email);
+        if (!user) throw new Error("400 Unknown user.");
+        if (user.otp !== req.body.otp) throw new Error("401 Unauthorised");
+        await UserService.setOtp(user.id, AuthService.generateOtp());
         res.send({
+            token: AuthService.generateToken(user.email, user.roles),
             success: true
         });
     }

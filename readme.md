@@ -104,15 +104,19 @@ module.exports = {
  - [ ] PM2 Load Balancing
  - [ ] PM2 Load Balancing with Websockets
  - [x] User OTP Login
- - [ ] User OTP verfication
- - [ ] User authentication JWT
- - [ ] User authentication roles
+ - [x] User OTP verfication
+ - [x] User authentication JWT
+ - [x] User authentication roles
+ - [ ] User role util
  - [ ] User authentication websocket
  - [ ] Test Setup with Mocks (e.g. Database)
  - [ ] TypeScript Support
  - [ ] K6 stress tests
- - [ ] Error Handling
+ - [x] Error Handling
  - [ ] Localisation
+ - [ ] Cache
+ - [ ] Request Limiter
+ - [ ] Is Email validator
 
  - [ ] Server/Client Shared Modules
  - [ ] DateUtil
@@ -128,3 +132,4 @@ module.exports = {
  - [ ] Declarative UI Framework TextEditor
  - [ ] Client Side Router
  - [ ] Client Side Router Params
+ - [ ] Login UI

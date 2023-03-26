@@ -4,8 +4,9 @@ const { Box, Headline } = require("./core/UI.js");
 
 HTTP.baseUrl = "https://chat.dobschal.eu/api";
 
-HTTP.post("/auth/login", {
-    email: "sascha@dobschal.eu"
+HTTP.post("/auth/verify", {
+    email: "sascha@dobschal.eu",
+    otp: "016991"
 }).then(response => {
     console.log("Reponse: ", response);
 });

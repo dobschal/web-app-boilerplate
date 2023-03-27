@@ -6,8 +6,6 @@ const { Storage } = require("../core/Storage.js");
 
 console.log("Email: ", Router.getQueryParams().email);
 
-if (!Router.getQueryParams().email) Router.go("/login");
-
 Box(
     Headline("Verify Email"),
     TextBlock("Please enter the One-Time-Password from the email."),
@@ -25,3 +23,7 @@ Box(
         }
     )
 );
+
+setTimeout(() => {
+    if (!Router.getQueryParams().email) Router.go("/login");
+});

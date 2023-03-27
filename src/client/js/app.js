@@ -10,6 +10,9 @@ Router.beforeEach = async function (path) {
     if (!isAuthenticated() && !["/verify-email", "/login"].includes(path)) {
         Router.go("/login");
         return false;
+    } else if (isAuthenticated() && ["/verify-email", "/login"].includes(path)) {
+        Router.go("/");
+        return false;
     }
     return true;
 };

@@ -28,6 +28,7 @@ const HTTP = {
             headers: this._getHeaders(),
             body: JSON.stringify(data)
         });
+        // TODO: throw error is status >= 400        
         return response.json();
     },
 

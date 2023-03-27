@@ -6,7 +6,7 @@ const { UserService } = require("../service/UserService.js");
 module.exports = {
 
     "POST /login": async (req, res) => {
-        expectType(req.body, { email: "string" });
+        expectType(req.body, { email: "email" });
         const otp = AuthService.generateOtp();
         let user = await UserService.getUserByEmail(req.body.email);
         if (!user) {

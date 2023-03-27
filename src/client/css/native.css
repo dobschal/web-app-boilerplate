@@ -1,3 +1,5 @@
+@import url("./animation.css");
+
 * {
     box-sizing: border-box;
 }
@@ -34,6 +36,30 @@ button:hover {
 button:active {
     cursor: pointer;
     transform: scale(1);
+}
+
+form.loading button,
+form.loading input {
+    pointer-events: none;
+    opacity: 0.75;
+}
+
+form.loading button::after {
+    display: inline-block;
+    content: "Loading";
+    width: 0.75rem;
+    height: 0.75rem;
+    border: solid 2px rgb(255 255 255 / 50%);
+    border-bottom-color: transparent;
+    border-radius: 50%;
+    font-size: 0;
+    line-height: 1.25rem;
+    margin-left: 1rem;
+    margin-right: -1rem;
+    animation-name: rotate;
+    animation-duration: 1s;
+    animation-iteration-count: infinite;
+    animation-timing-function: ease-in-out;
 }
 
 input {

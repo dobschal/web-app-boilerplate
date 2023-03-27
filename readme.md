@@ -107,8 +107,8 @@ module.exports = {
  - [x] Test Setup with Mocks (e.g. Database)
  - [x] Error Handling
  - [x] Authorised Routes
- - [ ] User role util
  - [x] User authentication websocket
+ - [ ] User role util 
  - [ ] K6 stress tests
  - [ ] Localisation
  - [ ] Request Limiter
@@ -117,11 +117,10 @@ module.exports = {
  - [ ] PM2 Load Balancing
  - [ ] PM2 Load Balancing with Websockets
 
- - [ ] Server/Client Shared Modules
+ - [x] Server/Client Shared Modules
  - [ ] DateUtil
  - [ ] esdocs types
 
- - [ ] SCSS Support
  - [x] Declarative UI Framework
  - [ ] Declarative UI Framework List
  - [ ] Declarative UI Framework File Input
@@ -134,12 +133,13 @@ module.exports = {
  - [x] Client Side Router BeforeEach Guard
  - [x] Login UI
  - [x] Event Bus
- - [ ] Button with Loading State
+ - [x] Button with Loading State
  - [ ] Page transition animation
  - [ ] Custom Font
 
 
 ### NOT sure if wanted:
+ - [ ] SCSS Support
  - [ ] TypeScript Support  --> brings problems with files etc.
  - [ ] Run Test, Build, Run on Watch Files --> performance issues
  - [ ] Cache --> how to evict nicely?

@@ -10,20 +10,27 @@ if (typeof HTMLElement.prototype.addStyle === "undefined") {
 function Form(...params) {
     const submitHandler = params.pop();
     params[0].setFocus(); // Make first input in form having focus
-    return build({
+    const element = build({
         tag: "form",
         children: params,
-        onSubmit(event) {
+        async onSubmit(event) {
             event.preventDefault();
+            element.classList.add("loading");
             const data = {};
             params // children
                 .filter((el) => el.tagName === "INPUT")
                 .forEach((el) => {
                     data[el.getAttribute("name")] = el.value;
                 });
-            submitHandler(data);
+            try {
+                await submitHandler(data);
+            } catch (e) {
+                console.error("Submit Handler thrown error: ", e);
+            }
+            element.classList.remove("loading");
         }
     });
+    return element;
 }
 
 function Box(...children) {
@@ -133,11 +140,12 @@ function PasswordInput(label, name) {
 }
 
 function SubmitButton(label) {
-    return build({
+    const element = build({
         tag: "button",
         type: "submit",
         text: label
     });
+    return element;
 }
 
 function TextBlock(text) {

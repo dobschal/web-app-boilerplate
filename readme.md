@@ -110,7 +110,6 @@ module.exports = {
  - [ ] User role util
  - [ ] User authentication websocket
  - [ ] Test Setup with Mocks (e.g. Database)
- - [ ] TypeScript Support
  - [ ] K6 stress tests
  - [x] Error Handling
  - [ ] Localisation
@@ -133,3 +132,6 @@ module.exports = {
  - [ ] Client Side Router
  - [ ] Client Side Router Params
  - [ ] Login UI
+
+
+ - [ ] TypeScript Support --> NOT sure if wanted. 

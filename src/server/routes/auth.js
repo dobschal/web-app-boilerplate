@@ -30,7 +30,7 @@ module.exports = {
         if (user.otp !== req.body.otp) throw new Error("401 Unauthorised");
         await UserService.setOtp(user.id, AuthService.generateOtp());
         res.send({
-            token: AuthService.generateToken(user.email, user.roles),
+            jwt: AuthService.generateToken(user.email, user.roles),
             success: true
         });
     }

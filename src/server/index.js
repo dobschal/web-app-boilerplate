@@ -8,6 +8,8 @@ const fs = require("fs");
 const { Server } = require("socket.io");
 const { runMigrations } = require("./core/database.js");
 const { init } = require("./core/websocket.js");
+const { verify } = require("jsonwebtoken");
+const { UserService } = require("./service/UserService.js");
 
 const app = express();
 const server = http.createServer(app);
@@ -37,6 +39,16 @@ async function setup() {
             app[httpMethod.toLowerCase()](pathPrefix + (path || ""), async (req, res) => {
                 try {
                     const t1 = Date.now();
+                    const authHeader = req.headers["authorisation"] || req.headers["authorization"] || req.headers["auth"];
+                    if (authHeader) {
+                        try {
+                            const [_, token] = authHeader.split(" ");
+                            const { email } = verify(token, process.env.JWT_SECRET);
+                            req.user = await UserService.getUserByEmail(email);
+                        } catch (e) {
+                            console.error("[server/index] \t❌ Got invalid JWT.");
+                        }
+                    }
                     await routeHandlers[key](req, res);
                     console.log("[server/index] \t👉 " + httpMethod + " " + pathPrefix + (path || "") + " \t\t" + (Date.now() - t1) + "ms.");
                 } catch (e) {

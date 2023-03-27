@@ -140,6 +140,20 @@ function SubmitButton(label) {
     });
 }
 
+function TextBlock(text) {
+    return build({
+        tag: "p",
+        text
+    });
+}
+
+function InlineText(text) {
+    return build({
+        tag: "span",
+        text
+    });
+}
+
 /**
  * Build a HTMLElement based on a given config.
  * Any property can be passed: Those will be added as attribute
@@ -189,6 +203,7 @@ module.exports = {
     AsyncList,
     Form,
     Headline,
+    InlineText,
     Input,
     PasswordInput,
     List,
@@ -197,5 +212,6 @@ module.exports = {
     Navigation,
     SubHeadline,
     SubmitButton,
+    TextBlock,
     Title
 };

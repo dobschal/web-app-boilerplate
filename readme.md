@@ -106,12 +106,11 @@ module.exports = {
  - [x] User authentication roles
  - [x] Test Setup with Mocks (e.g. Database)
  - [x] Error Handling
- - [ ] Authorised Routes
+ - [x] Authorised Routes
  - [ ] User role util
  - [x] User authentication websocket
  - [ ] K6 stress tests
  - [ ] Localisation
- - [ ] Cache
  - [ ] Request Limiter
  - [ ] Is Email validator
  - [ ] Deployment with PM2
@@ -123,18 +122,24 @@ module.exports = {
  - [ ] esdocs types
 
  - [ ] SCSS Support
- - [ ] Declarative UI Framework
+ - [x] Declarative UI Framework
  - [ ] Declarative UI Framework List
  - [ ] Declarative UI Framework File Input
  - [ ] Declarative UI Framework Select/Options
  - [ ] Declarative UI Framework Table
  - [ ] Declarative UI Framework Image
  - [ ] Declarative UI Framework TextEditor
- - [ ] Client Side Router
- - [ ] Client Side Router Params
- - [ ] Login UI
+ - [x] Client Side Router
+ - [x] Client Side Router Params
+ - [x] Client Side Router BeforeEach Guard
+ - [x] Login UI
+ - [x] Event Bus
+ - [ ] Button with Loading State
+ - [ ] Page transition animation
+ - [ ] Custom Font
 
 
 ### NOT sure if wanted:
- - [ ] TypeScript Support 
- - [ ] Run Test, Build, Run on Watch Files
+ - [ ] TypeScript Support  --> brings problems with files etc.
+ - [ ] Run Test, Build, Run on Watch Files --> performance issues
+ - [ ] Cache --> how to evict nicely?

@@ -1,3 +1,4 @@
+const t1 = Date.now();
 require("dotenv").config();
 const express = require("express");
 const http = require("http");
@@ -6,6 +7,7 @@ const cors = require("cors");
 const fs = require("fs");
 const { Server } = require("socket.io");
 const { runMigrations } = require("./core/database.js");
+const { init } = require("./core/websocket.js");
 
 const app = express();
 const server = http.createServer(app);
@@ -36,7 +38,7 @@ async function setup() {
                 try {
                     const t1 = Date.now();
                     await routeHandlers[key](req, res);
-                    console.log("[server/index] \t👉 " + httpMethod + " " + pathPrefix + (path || "") + " \t" + (Date.now() - t1) + "ms.");
+                    console.log("[server/index] \t👉 " + httpMethod + " " + pathPrefix + (path || "") + " \t\t" + (Date.now() - t1) + "ms.");
                 } catch (e) {
                     const statusCode = e.message.substring(0, 3);
                     if (isNaN(statusCode)) { // non expected error...
@@ -56,16 +58,10 @@ async function setup() {
         res.sendFile(path.join(__dirname, "../../build/public/index.html"));
     });
 
-    io.on("connection", (socket) => {
-        console.log("[server/index] \t🔗 User connected via Websocket.");
-        socket.on("chat message", (msg) => {
-            console.log("message: " + msg);
-            socket.emit("chat message", "Huhu");
-        });
-    });
+    init(io);
 
     server.listen(process.env.PORT, () => {
-        console.log("\n[server/index] \t🚀 Server started on port " + process.env.PORT);
+        console.log("\n[server/index] \t🚀 Server started in " + ((Date.now() - t1) / 1000).toFixed(2) + "sec on port " + process.env.PORT + ".");
     });
 }
 

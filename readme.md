@@ -100,26 +100,27 @@ module.exports = {
  - [x] .env support
  - [x] Version API route
  - [x] Email send Service
- - [ ] Deployment with PM2
- - [ ] PM2 Load Balancing
- - [ ] PM2 Load Balancing with Websockets
  - [x] User OTP Login
  - [x] User OTP verfication
  - [x] User authentication JWT
  - [x] User authentication roles
- - [ ] User role util
- - [ ] User authentication websocket
- - [ ] Test Setup with Mocks (e.g. Database)
- - [ ] K6 stress tests
+ - [x] Test Setup with Mocks (e.g. Database)
  - [x] Error Handling
+ - [ ] Authorised Routes
+ - [ ] User role util
+ - [x] User authentication websocket
+ - [ ] K6 stress tests
  - [ ] Localisation
  - [ ] Cache
  - [ ] Request Limiter
  - [ ] Is Email validator
+ - [ ] Deployment with PM2
+ - [ ] PM2 Load Balancing
+ - [ ] PM2 Load Balancing with Websockets
 
  - [ ] Server/Client Shared Modules
  - [ ] DateUtil
- - [ ] Models
+ - [ ] esdocs types
 
  - [ ] SCSS Support
  - [ ] Declarative UI Framework
@@ -134,4 +135,6 @@ module.exports = {
  - [ ] Login UI
 
 
- - [ ] TypeScript Support --> NOT sure if wanted. 
+### NOT sure if wanted:
+ - [ ] TypeScript Support 
+ - [ ] Run Test, Build, Run on Watch Files

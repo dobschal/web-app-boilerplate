@@ -116,26 +116,37 @@ module.exports = {
  - [ ] Deployment with PM2
  - [ ] PM2 Load Balancing
  - [ ] PM2 Load Balancing with Websockets
+ - [ ] Better Unit Tests Coverage
+ 
 
  - [x] Server/Client Shared Modules
  - [ ] DateUtil
  - [ ] esdocs types
 
- - [x] Declarative UI Framework
+ - [ ] Frontend Unit Tests
+ - [x] Declarative UI Framework 
  - [ ] Declarative UI Framework List
  - [ ] Declarative UI Framework File Input
  - [ ] Declarative UI Framework Select/Options
  - [ ] Declarative UI Framework Table
  - [ ] Declarative UI Framework Image
  - [ ] Declarative UI Framework TextEditor
+ - [ ] Dialog
+ - [ ] Toast
  - [x] Client Side Router
  - [x] Client Side Router Params
  - [x] Client Side Router BeforeEach Guard
  - [x] Login UI
  - [x] Event Bus
  - [x] Button with Loading State
+ - [ ] Example Chat App
  - [ ] Page transition animation
  - [ ] Custom Font
+ - [ ] Better Unit Tests Coverage
+
+ - [ ] iOS Container App
+ - [ ] Android Container App
+ - [ ] Push Notifications
 
 
 ### NOT sure if wanted:

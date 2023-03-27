@@ -33,7 +33,8 @@ async function setup() {
     fs.readdirSync(routesDirectory).forEach((file) => {
         const routeHandlers = require(path.join(routesDirectory, file));
         Object.keys(routeHandlers).forEach(key => {
-            const [httpMethod, path] = key.split(" ");
+            let [httpMethod, path] = key.split(" ");
+            if (path.endsWith("/")) path = path.slice(0, -1);
             const pathPrefix = file === "index.js" ? "/api" : "/api/" + file.slice(0, -3);
             console.log("[server/index] \t➕ Add route " + httpMethod + " " + pathPrefix + (path || ""));
             app[httpMethod.toLowerCase()](pathPrefix + (path || ""), async (req, res) => {

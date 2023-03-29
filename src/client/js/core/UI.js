@@ -7,6 +7,10 @@ if (typeof HTMLElement.prototype.addStyle === "undefined") {
     };
 }
 
+function Box(...children) {
+    return build({ children });
+}
+
 function Form(...params) {
     const submitHandler = params.pop();
     params[0].setFocus(); // Make first input in form having focus
@@ -33,57 +37,6 @@ function Form(...params) {
     return element;
 }
 
-function Box(...children) {
-    return build({ children });
-}
-
-function AsyncList(childrenBuilder) {
-    const el = List();
-    el.reload = function () {
-        childrenBuilder().then((children) => {
-            el.innerHTML = "";
-            el.append(...children);
-        });
-    };
-    el.reload();
-    return el;
-}
-
-function Link(text, ref) {
-    return build({
-        tag: "a",
-        href: ref,
-        text,
-
-        /**
-     * On link click, we check if the reference is an external resource.
-     * If so, just let the link do the native stuff, else use our Router
-     * to handle the inapp routing.
-     *
-     * @param {MouseEvent} event
-     */
-        onClick(event) {
-            if (ref.startsWith("http://") || ref.startsWith("https://")) return;
-            event.preventDefault();
-            Router.go(ref);
-        }
-    });
-}
-
-function Navigation(...children) {
-    return build({
-        tag: "nav",
-        children
-    });
-}
-
-function Title(text) {
-    return build({
-        tag: "h1",
-        text
-    });
-}
-
 function Headline(text) {
     return build({
         tag: "h2",
@@ -91,9 +44,9 @@ function Headline(text) {
     });
 }
 
-function SubHeadline(text) {
+function InlineText(text) {
     return build({
-        tag: "h3",
+        tag: "span",
         text
     });
 }
@@ -106,6 +59,7 @@ function Input(label, name, type = "text") {
         placeholder: label
     });
     el.setRequired = function () {
+        el.setAttribute("required", "true");
         el.addEventListener("blur", () =>
             el.classList[el.value ? "remove" : "add"]("has-error")
         );
@@ -119,6 +73,27 @@ function Input(label, name, type = "text") {
         return this;
     };
     return el;
+}
+
+function Link(text, ref) {
+    return build({
+        tag: "a",
+        href: ref,
+        text,
+
+        /**
+         * On link click, we check if the reference is an external resource.
+         * If so, just let the link do the native stuff, else use our Router
+         * to handle the inapp routing.
+         *
+         * @param {MouseEvent} event
+         */
+        onClick(event) {
+            if (ref.startsWith("http://") || ref.startsWith("https://")) return;
+            event.preventDefault();
+            Router.go(ref);
+        }
+    });
 }
 
 function List(children) {
@@ -135,8 +110,22 @@ function ListItem(text) {
     });
 }
 
+function Navigation(...children) {
+    return build({
+        tag: "nav",
+        children
+    });
+}
+
 function PasswordInput(label, name) {
     return Input(label, name, "password").setRequired();
+}
+
+function SubHeadline(text) {
+    return build({
+        tag: "h3",
+        text
+    });
 }
 
 function SubmitButton(label) {
@@ -148,6 +137,13 @@ function SubmitButton(label) {
     return element;
 }
 
+function Title(text) {
+    return build({
+        tag: "h1",
+        text
+    });
+}
+
 function TextBlock(text) {
     return build({
         tag: "p",
@@ -155,28 +151,32 @@ function TextBlock(text) {
     });
 }
 
-function InlineText(text) {
-    return build({
-        tag: "span",
-        text
-    });
-}
+// TODO: add proper description
 
-/**
- * Build a HTMLElement based on a given config.
- * Any property can be passed: Those will be added as attribute
- * to the HTMLElement. If the property starts with "on", and the value
- * is a function, it adds a eventListener.
- *
- * @param {{tag: string, children: HTMLElement[]}} param0
- */
-function build({ tag = "div", text, children = [], ...attributes }) {
+function build({ tag = "div", text, children, ...attributes }) {
     const element = document.createElement(tag);
-    Object.keys(attributes).forEach(
-        _handleBuildAttribute.bind({ element, attributes })
-    );
-    if (typeof text === "string") element.innerText = text;
-    element.append(...children);
+    element.update = function () {
+        Object.keys(attributes).forEach(
+            _handleBuildAttribute.bind({ element, attributes })
+        );
+        if (typeof text === "string") {
+            element.innerText = text;
+        } else if (typeof text === "function") {
+            element.innerText = text();
+        }
+        if (Array.isArray(children)) {
+            element.innerHTML = "";
+            element.append(...children.map(child => typeof child === "function" ? child() : child));
+        } else if (typeof children === "function") {
+            element.innerHTML = "";
+            element.append(...children().map(child => typeof child === "function" ? child() : child));
+        }
+    };
+    element.on = function (eventName, callback) {
+        element.addEventListener(eventName, callback);
+        return element;
+    };
+    element.update();
     setTimeout(() =>
         !element.parentElement ? document.body.append(element) : null
     );
@@ -201,14 +201,13 @@ function _handleBuildAttribute(key) {
             this.attributes[key]
         );
     } else {
-        this.element.setAttribute(key, this.attributes[key]);
+        this.element.setAttribute(key, typeof this.attributes[key] === "function" ? this.attributes[key]() : this.attributes[key]);
     }
 }
 
 module.exports = {
     Box,
     build,
-    AsyncList,
     Form,
     Headline,
     InlineText,

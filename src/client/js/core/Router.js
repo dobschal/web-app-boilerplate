@@ -1,6 +1,6 @@
 module.exports.Router = {
     routes: {},
-    activePath: undefined,
+    activeRoute: undefined,
     cache: {},
     beforeEach: undefined,
     rawQuery: undefined,
@@ -31,14 +31,19 @@ module.exports.Router = {
         return queryParams;
     },
 
+
+    // TODO: clean up
+
     async go(path, pushState = true) {
-        this._clear();
+        if (typeof this.activeRoute !== "undefined") {
+            this.cache[this.activeRoute] = [...document.body.children];
+        }
+        document.body.innerHTML = "";
         let route = "*";
         let [pathWithoutQuery, query] = path.split("?");
         if (pathWithoutQuery.endsWith("/")) pathWithoutQuery = pathWithoutQuery.slice(0, -1);
         this.rawQuery = query;
         this.params = {};
-        this.activePath = path;
         Object.keys(this.routes).forEach(routeName => {
             const pathParts = pathWithoutQuery.split("/");
             const routeNameParts = routeName.split("/");
@@ -57,27 +62,21 @@ module.exports.Router = {
             const result = await this.beforeEach(route);
             if (!result) return;
         }
+        this.activeRoute = route;
         if (pushState) {
             window.history.pushState({}, "", route === "*" ? "/" : path);
         }
-        if (this.cache[path]) {
-            return document.body.append(...this.cache[path]);
+        if (this.cache[this.activeRoute]) {
+            console.log("[Router] Use cached HTMLelements: ", this.activeRoute, this.cache[this.activeRoute]);
+            document.body.append(...this.cache[this.activeRoute]);
+            for (let child of document.body.children) {
+                if (typeof child.update !== "function") continue;
+                console.log("[Router] Update page on reopen: ", child);
+                child.update();
+            }
+        } else {
+            console.log("[Router] Import page module: ", this.activeRoute);
+            await this.routes[this.activeRoute]();
         }
-        await this.routes[route]();
-    },
-
-    _clear() {
-        if (typeof this.activePath !== "undefined") {
-            this.cache[this.activePath] = [...document.body.children];
-        }
-        document.body.innerHTML = "";
     }
-
-    // _parsePath(path) {
-    //     let [_path, query] = path.split("?");
-    //     this.rawQuery = query;
-    //     console.log("Set query: ", query, _path);
-    //     if (!this.routes[_path]) _path = "*";
-    //     return _path;
-    // }
 };

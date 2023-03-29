@@ -1,14 +1,64 @@
 const { Router } = require("./Router.js");
 
+/**
+ * @typedef {object} BuildConfig
+ * @property {string} [tag]
+ * @property {string|() => string} [text]
+ * @property {HTMLElement[]|() => HTMLElement[]} [children]
+ */
+
 if (typeof HTMLElement.prototype.addStyle === "undefined") {
+
+    /**
+     * @param  {...string} classNames 
+     * @returns {HTMLElement}
+     */
     HTMLElement.prototype.addStyle = function (...classNames) {
         classNames.forEach((className) => this.classList.add(className));
         return this;
     };
 }
 
-function Box(...children) {
-    return build({ children });
+if (typeof HTMLElement.prototype.removeStyle === "undefined") {
+
+    /**
+     * @param  {...string} classNames 
+     * @returns {HTMLElement}
+     */
+    HTMLElement.prototype.removeStyle = function (...classNames) {
+        classNames.forEach((className) => this.classList.remove(className));
+        return this;
+    };
+}
+
+if (typeof HTMLElement.prototype.on === "undefined") {
+
+    /**
+     * @param {string} eventName 
+     * @param {(Event) => void)} callback 
+     * @returns {HTMLElement}
+     */
+    HTMLElement.prototype.on = function (eventName, callback) {
+        if (eventName === "create") {
+            setTimeout(() => callback(this));
+            return this;
+        }
+        this.addEventListener(eventName, callback);
+        return this;
+    };
+}
+
+/**
+ * @param {BuildConfig|HTMLElement|() => HTMLElement} config 
+ * @param  {...HTMLElement|() => HTMLElement} children 
+ * @returns {HTMLDivElement}
+ */
+function Box(config, ...children) {
+    if (config instanceof HTMLElement || typeof config === "function") {
+        children.unshift(config);
+        config = {};
+    }
+    return build({ children, ...config });
 }
 
 function Form(...params) {
@@ -103,6 +153,14 @@ function List(children) {
     });
 }
 
+/**
+ * Return the first List instance in the DOM.
+ * @returns {HTMLElement}
+ */
+List.first = function () {
+    return document.querySelector("ul");
+};
+
 function ListItem(text) {
     return build({
         tag: "li",
@@ -151,11 +209,17 @@ function TextBlock(text) {
     });
 }
 
-// TODO: add proper description
-
-function build({ tag = "div", text, children, ...attributes }) {
+/**
+ * Creates a HTMLElement based on a passed config.
+ * 
+ * @param {BuildConfig} config 
+ * @returns {HTMLElement}
+ */
+function build(config) {
+    const { tag = "div", text, children, ...attributes } = config;
     const element = document.createElement(tag);
-    element.update = function () {
+    element.update = () => {
+        console.log("[UI] Called update: ", tag, text);
         Object.keys(attributes).forEach(
             _handleBuildAttribute.bind({ element, attributes })
         );
@@ -172,10 +236,6 @@ function build({ tag = "div", text, children, ...attributes }) {
             element.append(...children().map(child => typeof child === "function" ? child() : child));
         }
     };
-    element.on = function (eventName, callback) {
-        element.addEventListener(eventName, callback);
-        return element;
-    };
     element.update();
     setTimeout(() =>
         !element.parentElement ? document.body.append(element) : null
@@ -189,13 +249,16 @@ function build({ tag = "div", text, children, ...attributes }) {
  * to the HTMLElement that is created. If the argument startsWith
  * "on" and the value is a function, we expect to have a eventListener.
  *
- * This function needs to have the element and attributes bound.
+ * This function needs to have the element and attributes bound as context.
  *
  * @param {string} key
  * @returns {void}
  */
 function _handleBuildAttribute(key) {
     if (key.startsWith("on") && typeof this.attributes[key] === "function") {
+        if (key.toLowerCase() === "oncreate") {
+            return setTimeout(() => this.attributes[key](this.element));
+        }
         this.element.addEventListener(
             key.substring(2).toLowerCase(),
             this.attributes[key]

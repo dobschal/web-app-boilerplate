@@ -102,6 +102,23 @@ ul li:first-child {
     border-radius: 0.25rem 0.25rem 0 0;
 }
 
+ul li.selectable::after {
+    content: ">";
+    display: block;
+    float: right;
+    font-size: 1rem;
+    transform: scale(1, 1.75);
+    line-height: 1.1rem;
+    color: rgb(205 205 205);
+    font-weight: 100;
+}
+
+ul li.selectable:hover,
+ul li.selectable:active {
+    cursor: pointer;
+    background-color: #EFEFEF;
+}
+
 ul.loading::after {
     display: block;
     content: "Loading";

@@ -1,3 +1,4 @@
+const t1 = Date.now();
 require("dotenv").config();
 const express = require("express");
 const http = require("http");
@@ -6,6 +7,9 @@ const cors = require("cors");
 const fs = require("fs");
 const { Server } = require("socket.io");
 const { runMigrations } = require("./core/database.js");
+const { init } = require("./core/websocket.js");
+const { verify } = require("jsonwebtoken");
+const { UserService } = require("./service/UserService.js");
 
 const app = express();
 const server = http.createServer(app);
@@ -29,14 +33,25 @@ async function setup() {
     fs.readdirSync(routesDirectory).forEach((file) => {
         const routeHandlers = require(path.join(routesDirectory, file));
         Object.keys(routeHandlers).forEach(key => {
-            const [httpMethod, path] = key.split(" ");
+            let [httpMethod, path] = key.split(" ");
+            if (path.endsWith("/")) path = path.slice(0, -1);
             const pathPrefix = file === "index.js" ? "/api" : "/api/" + file.slice(0, -3);
             console.log("[server/index] \t➕ Add route " + httpMethod + " " + pathPrefix + (path || ""));
             app[httpMethod.toLowerCase()](pathPrefix + (path || ""), async (req, res) => {
                 try {
                     const t1 = Date.now();
+                    const authHeader = req.headers["authorisation"] || req.headers["authorization"] || req.headers["auth"];
+                    if (authHeader) {
+                        try {
+                            const [_, token] = authHeader.split(" ");
+                            const { email } = verify(token, process.env.JWT_SECRET);
+                            req.user = await UserService.getUserByEmail(email);
+                        } catch (e) {
+                            console.error("[server/index] \t❌ Got invalid JWT.");
+                        }
+                    }
                     await routeHandlers[key](req, res);
-                    console.log("[server/index] \t👉 " + httpMethod + " " + pathPrefix + (path || "") + " \t" + (Date.now() - t1) + "ms.");
+                    console.log("[server/index] \t👉 " + httpMethod + " " + pathPrefix + (path || "") + " \t\t" + (Date.now() - t1) + "ms.");
                 } catch (e) {
                     const statusCode = e.message.substring(0, 3);
                     if (isNaN(statusCode)) { // non expected error...
@@ -56,16 +71,10 @@ async function setup() {
         res.sendFile(path.join(__dirname, "../../build/public/index.html"));
     });
 
-    io.on("connection", (socket) => {
-        console.log("[server/index] \t🔗 User connected via Websocket.");
-        socket.on("chat message", (msg) => {
-            console.log("message: " + msg);
-            socket.emit("chat message", "Huhu");
-        });
-    });
+    init(io);
 
     server.listen(process.env.PORT, () => {
-        console.log("\n[server/index] \t🚀 Server started on port " + process.env.PORT);
+        console.log("\n[server/index] \t🚀 Server started in " + ((Date.now() - t1) / 1000).toFixed(2) + "sec on port " + process.env.PORT + ".");
     });
 }
 

@@ -14,5 +14,9 @@ module.exports.AuthService = {
      */
     generateToken(email, roles) {
         return jwt.sign({ email, roles }, process.env.JWT_SECRET);
+    },
+
+    expectUser(req) {
+        if (!req.user) throw new Error("401 Please login first.");
     }
 };

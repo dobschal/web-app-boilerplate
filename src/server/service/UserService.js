@@ -20,5 +20,11 @@ module.exports.UserService = {
     },
     async setOtp(userId, otp) {
         await query("UPDATE user SET otp=? WHERE id=?", [otp, userId]);
+    },
+    async findAll() {
+        return await query("SELECT * FROM user;");
+    },
+    async find(searchTerm) {
+        return await query(`SELECT * FROM user WHERE email LIKE "%${searchTerm}%";`);
     }
 };

@@ -6,7 +6,7 @@ const { UserService } = require("../service/UserService.js");
 module.exports = {
 
     "POST /login": async (req, res) => {
-        expectType(req.body, { email: "string" });
+        expectType(req.body, { email: "email" });
         const otp = AuthService.generateOtp();
         let user = await UserService.getUserByEmail(req.body.email);
         if (!user) {
@@ -30,7 +30,7 @@ module.exports = {
         if (user.otp !== req.body.otp) throw new Error("401 Unauthorised");
         await UserService.setOtp(user.id, AuthService.generateOtp());
         res.send({
-            token: AuthService.generateToken(user.email, user.roles),
+            jwt: AuthService.generateToken(user.email, user.roles),
             success: true
         });
     }

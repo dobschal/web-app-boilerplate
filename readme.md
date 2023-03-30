@@ -125,39 +125,58 @@ module.exports = {
  - [x] .env support
  - [x] Version API route
  - [x] Email send Service
- - [x] Database via Docker Compose
- - [ ] Deployment with PM2
- - [ ] PM2 Load Balancing
- - [ ] PM2 Load Balancing with Websockets
  - [x] User OTP Login
  - [x] User OTP verfication
  - [x] User authentication JWT
  - [x] User authentication roles
- - [ ] User role util
- - [ ] User authentication websocket
- - [ ] Test Setup with Mocks (e.g. Database)
- - [ ] K6 stress tests
+ - [x] Test Setup with Mocks (e.g. Database)
  - [x] Error Handling
+ - [x] Authorised Routes
+ - [x] User authentication websocket
+ - [x] Database via Docker Compose
+ - [ ] User role util 
+ - [ ] K6 stress tests
  - [ ] Localisation
- - [ ] Cache
  - [ ] Request Limiter
  - [ ] Is Email validator
+ - [ ] Deployment with PM2
+ - [ ] PM2 Load Balancing
+ - [ ] PM2 Load Balancing with Websockets
+ - [ ] Better Unit Tests Coverage
+ 
 
- - [ ] Server/Client Shared Modules
+ - [x] Server/Client Shared Modules
  - [ ] DateUtil
- - [ ] Models
+ - [ ] esdocs types
 
- - [ ] SCSS Support
- - [ ] Declarative UI Framework
+ - [ ] Frontend Unit Tests
+ - [x] Declarative UI Framework 
  - [ ] Declarative UI Framework List
  - [ ] Declarative UI Framework File Input
  - [ ] Declarative UI Framework Select/Options
  - [ ] Declarative UI Framework Table
  - [ ] Declarative UI Framework Image
  - [ ] Declarative UI Framework TextEditor
- - [ ] Client Side Router
- - [ ] Client Side Router Params
- - [ ] Login UI
+ - [ ] Dialog
+ - [ ] Toast
+ - [x] Client Side Router
+ - [x] Client Side Router Params
+ - [x] Client Side Router BeforeEach Guard
+ - [x] Login UI
+ - [x] Event Bus
+ - [x] Button with Loading State
+ - [ ] Example Chat App
+ - [ ] Page transition animation
+ - [ ] Custom Font
+ - [ ] Better Unit Tests Coverage
+
+ - [ ] iOS Container App
+ - [ ] Android Container App
+ - [ ] Push Notifications
 
 
- - [ ] TypeScript Support --> NOT sure if wanted. 
+### NOT sure if wanted:
+ - [ ] SCSS Support
+ - [ ] TypeScript Support  --> brings problems with files etc.
+ - [ ] Run Test, Build, Run on Watch Files --> performance issues
+ - [ ] Cache --> how to evict nicely?

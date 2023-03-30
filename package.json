@@ -4,6 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
+    "database": "docker-compose up -d",
     "build:client": "rm -rf build/public && parcel build src/client/index.html --out-dir build/public",
     "start": "concurrently \"nodemon --watch src/server src/server/index.js\" \"parcel watch src/client/index.html --out-dir build/public\"",
     "lint": "eslint src/ --fix",

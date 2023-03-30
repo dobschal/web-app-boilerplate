@@ -7,6 +7,20 @@ const { Router } = require("./Router.js");
  * @property {HTMLElement[]|() => HTMLElement[]} [children]
  */
 
+const refs = {};
+
+if (typeof HTMLElement.prototype.ref === "undefined") {
+
+    /**
+     * @param  {...string} classNames
+     * @returns {HTMLElement}
+     */
+    HTMLElement.prototype.ref = function (name) {
+        refs[name] = this;
+        return this;
+    };
+}
+
 if (typeof HTMLElement.prototype.addStyle === "undefined") {
 
     /**
@@ -39,10 +53,6 @@ if (typeof HTMLElement.prototype.on === "undefined") {
      * @returns {HTMLElement}
      */
     HTMLElement.prototype.on = function (eventName, callback) {
-        if (eventName === "create") {
-            setTimeout(() => callback(this));
-            return this;
-        }
         if (eventName === "value") {
             this.addEventListener(
                 "input",
@@ -247,16 +257,22 @@ function build(config) {
         }
         if (Array.isArray(children)) {
             element.innerHTML = "";
-            element.append(...children.map(child => typeof child === "function" ? child() : child));
+            element.append(...children.map(child => typeof child === "function" ? child() : child.update()));
         } else if (typeof children === "function") {
             element.innerHTML = "";
-            element.append(...children().map(child => typeof child === "function" ? child() : child));
+            element.append(...children().map(child => typeof child === "function" ? child() : child.update()));
         }
+        setTimeout(() => {
+            const event = new Event("update");
+            element.dispatchEvent(event);
+        });
+        return element;
     };
-    element.update();
-    setTimeout(() =>
-        !element.parentElement ? document.body.append(element) : null
-    );
+    setTimeout(() => {
+        if(element.parentElement) return;
+        document.body.append(element);
+        element.update();
+    });
     return element;
 }
 
@@ -273,10 +289,6 @@ function build(config) {
  */
 function _handleBuildAttribute(key) {
     if (key.startsWith("on") && typeof this.attributes[key] === "function") {
-        if (key.toLowerCase() === "oncreate") {
-            setTimeout(() => this.attributes[key](this.element));
-            return;
-        }
         if (key.toLowerCase() === "onvalue") {
             this.element.addEventListener(
                 "input",
@@ -309,5 +321,6 @@ module.exports = {
     SubHeadline,
     SubmitButton,
     TextBlock,
-    Title
+    Title,
+    refs
 };

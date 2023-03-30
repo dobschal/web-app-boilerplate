@@ -4,9 +4,8 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "all": "npm run lint && npm test && npm run build && npm start",
-    "build": "rm -rf build/public && parcel build src/client/index.html --out-dir build/public",
-    "start": "node src/server/index.js",
+    "build:client": "rm -rf build/public && parcel build src/client/index.html --out-dir build/public",
+    "start": "concurrently \"nodemon --watch src/server src/server/index.js\" \"parcel watch src/client/index.html --out-dir build/public\"",
     "lint": "eslint src/ --fix",
     "test": "jest"
   },
@@ -21,12 +20,15 @@
     "mysql": "^2.18.1",
     "nodemailer": "^6.9.1",
     "socket.io": "^4.6.1",
-    "socket.io-client": "^4.6.1"
+    "socket.io-client": "^4.6.1",
+    "src": "^1.1.2"
   },
   "devDependencies": {
+    "concurrently": "^8.0.1",
     "eslint": "^7.32.0",
     "eslint-plugin-jest": "^26.9.0",
     "jest": "^27.5.1",
+    "nodemon": "^2.0.22",
     "parcel-bundler": "^1.12.5"
   }
 }

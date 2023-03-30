@@ -1,0 +1,9 @@
+img.icon {
+    width: 2rem;
+}
+
+img.icon.button:hover,
+img.icon.button:active{
+    cursor: pointer;
+    transform: scale(1.05);
+}

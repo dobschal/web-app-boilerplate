@@ -31,6 +31,7 @@ async function setup() {
     // The name of the file is the path prefix. E.g. `routes/login.js` would end up in "/api/login/"
     const routesDirectory = path.join(__dirname, "routes");
     fs.readdirSync(routesDirectory).forEach((file) => {
+        // TODO: clean that up
         const routeHandlers = require(path.join(routesDirectory, file));
         Object.keys(routeHandlers).forEach(key => {
             let [httpMethod, path] = key.split(" ");

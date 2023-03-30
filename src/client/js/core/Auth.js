@@ -4,4 +4,15 @@ function isAuthenticated() {
     return Boolean(Storage.get("jwt"));
 }
 
-module.exports = { isAuthenticated };
+function logout() {
+    Storage.remove("jwt");
+    window.location.reload();
+}
+
+function getJwtContent() {
+    if(!isAuthenticated()) return;
+    const [_, content] = Storage.get("jwt").split(".");
+    return JSON.parse(atob(content));
+}
+
+module.exports = { isAuthenticated, logout, getJwtContent };

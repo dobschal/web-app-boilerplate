@@ -43,6 +43,13 @@ if (typeof HTMLElement.prototype.on === "undefined") {
             setTimeout(() => callback(this));
             return this;
         }
+        if (eventName === "value") {
+            this.addEventListener(
+                "input",
+                (event) => callback(event.target?.value)
+            );
+            return this;
+        }
         this.addEventListener(eventName, callback);
         return this;
     };
@@ -59,6 +66,17 @@ function Box(config, ...children) {
         config = {};
     }
     return build({ children, ...config });
+}
+
+/**
+ * @param {string} imageUrl
+ * @returns {HTMLImageElement}
+ */
+function Image(imageUrl) {
+    return build({
+        tag: "img",
+        src: imageUrl
+    });
 }
 
 function Form(...params) {
@@ -219,7 +237,6 @@ function build(config) {
     const { tag = "div", text, children, ...attributes } = config;
     const element = document.createElement(tag);
     element.update = () => {
-        console.log("[UI] Called update: ", tag, text);
         Object.keys(attributes).forEach(
             _handleBuildAttribute.bind({ element, attributes })
         );
@@ -257,7 +274,15 @@ function build(config) {
 function _handleBuildAttribute(key) {
     if (key.startsWith("on") && typeof this.attributes[key] === "function") {
         if (key.toLowerCase() === "oncreate") {
-            return setTimeout(() => this.attributes[key](this.element));
+            setTimeout(() => this.attributes[key](this.element));
+            return;
+        }
+        if (key.toLowerCase() === "onvalue") {
+            this.element.addEventListener(
+                "input",
+                (event) => this.attributes[key](event.target?.value)
+            );
+            return;
         }
         this.element.addEventListener(
             key.substring(2).toLowerCase(),
@@ -273,6 +298,7 @@ module.exports = {
     build,
     Form,
     Headline,
+    Image,
     InlineText,
     Input,
     PasswordInput,

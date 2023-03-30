@@ -10,10 +10,7 @@ Run in terminal:
 # install dependencies
 npm install
 
-# build frontend application
-npm run build
-
-# start server
+# This builds the frontend, starts the server and watches for changes to restart and rebuild
 npm start
 
 ```
@@ -28,6 +25,8 @@ Then just start the database via terminal with:
 ```bash
 docker-compose up -d
 ```
+
+All database migrations take place in the `src/db-migrations` folder.
 
 ### ESLint (VSCode)
 
@@ -136,6 +135,7 @@ module.exports = {
  - [x] Database via Docker Compose
  - [ ] User role util 
  - [ ] K6 stress tests
+ - [ ] Path variables in URL
  - [ ] Localisation
  - [ ] Request Limiter
  - [ ] Is Email validator
@@ -150,8 +150,9 @@ module.exports = {
  - [ ] esdocs types
 
  - [ ] Frontend Unit Tests
+ - [ ] Have onAdd to dom event
  - [x] Declarative UI Framework 
- - [ ] Declarative UI Framework List
+ - [x] Declarative UI Framework List
  - [ ] Declarative UI Framework File Input
  - [ ] Declarative UI Framework Select/Options
  - [ ] Declarative UI Framework Table

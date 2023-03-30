@@ -1,6 +1,11 @@
 const _listeners = [];
 let countListeners = -1;
 
+/**
+ * @param {string} name
+ * @param {() => void} callback
+ * @returns {number} - event listener ID
+ */
 function on(name, callback) {
     const id = countListeners++;
     _listeners.push({ name, callback, id });

@@ -1,25 +1,21 @@
-const { HTTP } = require("../core/HTTP.js");
-const { Router } = require("../core/Router.js");
-const { Box, TextBlock, Title, Headline, Input, List, ListItem } = require("../core/UI.js");
+const {HTTP} = require("../core/HTTP.js");
+const {Router} = require("../core/Router.js");
+const {Box, Input, List, ListItem} = require("../core/UI.js");
+const {Header} = require("../partials/Header.js");
+const {getJwtContent} = require("../core/Auth.js");
 
 const data = {
     users: []
 };
 
 Box(
-    Title("Chat"),
-    TextBlock("Welcome to my chat app"),
-    Headline(() => "Find Users"),
-    Input("Query").on("input", (event) => _loadUsers(event.target.value)),
-    List(() => data.users.map(user =>
-        ListItem(user.email).on("click", () => {
-            _openChat(user.email);
-        }).addStyle("selectable")
-    ))
+    Header("Find a user to chat with"),
+    Input("Query").on("value", _loadUsers),
+    List(_buildListItem)
 ).on("create", () => _loadUsers());
 
 /**
- * @param {string} query 
+ * @param {string} [query]
  */
 async function _loadUsers(query) {
     if (data.users.length === 0) List.first().addStyle("loading");
@@ -28,12 +24,23 @@ async function _loadUsers(query) {
     List.first().update();
 }
 
+function _buildListItem() {
+    const {email: currentUserEmail} = getJwtContent();
+    return data.users
+        .filter(({email}) => email !== currentUserEmail)
+        .map(user =>
+            ListItem(user.email)
+                .on("click", () => _openChat(user.email))
+                .addStyle("selectable")
+        );
+}
+
 /**
- * @param {string} email 
+ * @param {string} email
  */
 async function _openChat(email) {
     const response = await HTTP.post("/chats/open", {
         email
     });
-    Router.go(`/chats/${response.chatRoomId}`);
+    await Router.go(`/chats/${response.chatRoomId}`);
 }

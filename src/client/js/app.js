@@ -1,10 +1,11 @@
+
 const { isAuthenticated } = require("./core/Auth.js");
 const { HTTP } = require("./core/HTTP.js");
 const { Router } = require("./core/Router.js");
 
-console.log("[app] Application started.");
+console.log("[app] 🚀 Application started.");
 
-HTTP.baseUrl = "https://chat.dobschal.eu/api";
+HTTP.baseUrl = window.location.protocol + "//" + window.location.host + "/api";
 
 Router.beforeEach = async function (path) {
     if (!isAuthenticated() && !["/verify-email", "/login"].includes(path)) {

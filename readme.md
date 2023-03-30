@@ -2,9 +2,34 @@
 
 ## Installation
 
-To get this boilerplate code deployd and the workspace in VSCode up and running, some additional steps need to be done.
+To get this boilerplate code deployd and the workspace (in VSCode) up and running, some additional steps need to be done.
+Check that you have NodeJS version 10+ installed. Then add all needed information to the `.env` file.
 
-### ESLint
+Run in terminal:
+```bash
+# install dependencies
+npm install
+
+# build frontend application
+npm run build
+
+# start server
+npm start
+
+```
+
+### Run Database
+
+The `.env` file contains the credentials to connect to your MySQL database. The project contains a docker compose file
+to start a MySQL database easily via Docker.
+
+The name of the database inside the `docker-compose.yml` and `.env` file need to match.
+Then just start the database via terminal with:
+```bash
+docker-compose up -d
+```
+
+### ESLint (VSCode)
 
 In Visual Studio code, check that the eslint extension is installed and enabled.
 Here at the seetings to have eslint work fine in VSCode:
@@ -21,7 +46,7 @@ Here at the seetings to have eslint work fine in VSCode:
 }
 ```
 
-### Server
+### Server Deployment
 
 nginx example for `/etc/nginx/sites-available/default`.
 ```
@@ -100,6 +125,7 @@ module.exports = {
  - [x] .env support
  - [x] Version API route
  - [x] Email send Service
+ - [x] Database via Docker Compose
  - [ ] Deployment with PM2
  - [ ] PM2 Load Balancing
  - [ ] PM2 Load Balancing with Websockets
@@ -110,9 +136,9 @@ module.exports = {
  - [ ] User role util
  - [ ] User authentication websocket
  - [ ] Test Setup with Mocks (e.g. Database)
- - [ ] K6 stress tests
+ - [ ] K6 stress tests
  - [x] Error Handling
- - [ ] Localisation
+ - [ ] Localisation
  - [ ] Cache
  - [ ] Request Limiter
  - [ ] Is Email validator

@@ -1,10 +1,20 @@
 # Web App Boilerplate
 
-## Installation
+👉 This is a boilerplate framework for a web app to be built with NodeJS and MySQL.
 
-To get this boilerplate code deployd and the workspace (in VSCode) up and running, some additional steps need to be done.
-Check that you have NodeJS version 10+ installed. Then add all needed information to the `.env` file.
+## Content 
+1. [Installation](#installation)
+2. [Deployment](#deployment)
+3. [Development](#development)
+4. [Features](#features)
 
+## Installation 🎁<a name="installation"></a>
+
+To get this boilerplate code deployd and the workspace (e.g. in VSCode) up and running, some additional steps need to be done.
+* Have NodeJS version 10+ and MySQL 8+ or Docker installed
+* Add all needed information to the `.env` file.
+
+### Start the app
 Run in terminal:
 ```bash
 # install dependencies
@@ -12,10 +22,9 @@ npm install
 
 # This builds the frontend, starts the server and watches for changes to restart and rebuild
 npm start
-
 ```
 
-### Run Database
+### Run Database with Docker
 
 The `.env` file contains the credentials to connect to your MySQL database. The project contains a docker compose file
 to start a MySQL database easily via Docker.
@@ -28,10 +37,12 @@ docker-compose up -d
 
 All database migrations take place in the `src/db-migrations` folder.
 
-### ESLint (VSCode)
 
+### Configure ESLint
+
+#### VSCode
 In Visual Studio code, check that the eslint extension is installed and enabled.
-Here at the seetings to have eslint work fine in VSCode:
+Here are the settings to have eslint work fine in VSCode:
 ```json
 {
     "eslint.format.enable": true,
@@ -44,10 +55,31 @@ Here at the seetings to have eslint work fine in VSCode:
     ]
 }
 ```
+#### IntelliJ
+In IntelliJ just right click the `.eslintrc.yml` file and choose `Apply eslint code style rules`.
+IntelliJ has the option to apply eslint fixes on save too. Check the preferences therefore.
 
-### Server Deployment
+## Deployment  🚀<a name="deployment"></a>
 
-nginx example for `/etc/nginx/sites-available/default`.
+To deploy this application, follow these steps:
+* SSH into server
+* Generate SSH key pair
+* Add public key to GitHub repository for access
+* Install and run MySQL with user/password security
+* Add one database to MySQL
+* Install NodeJS version 10 or higher
+* Check git repository on server
+* Run `npm install` and `npm run build`
+* Adjust the `.env` to contain the correct credentials to the database and email provider
+* Install PM2 via NPM: `npm install -g pm2`
+* Start the `src/server/index.js` file with PM2
+* Get a domain or subdomain
+* Configure Nginx and run `systemctl restart nginx`
+* Open Domain in your browser. Should work :)
+
+### Nginx Configuration
+
+Example for `/etc/nginx/sites-available/default`:
 ```
 server {
 	listen 80;
@@ -78,11 +110,23 @@ server {
 }
 ```
 
-## Server
+## Development 🤓<a name="development"></a>
 
-### Database Transaction
+The applications source code under `src/` is split into 3 parts:
+* server
+* client
+* shared
 
-Transaction allow automatical rollbacks of throw for save database handling.
+To start the application for development and watch/auto-restart on file changes, just run:
+```bash
+npm start
+```
+
+### Server
+
+#### Database Transaction
+
+Transaction allow automatically rollbacks of throw for save database handling.
 
 Example:
 ```javascript
@@ -94,7 +138,7 @@ await transaction(async (query) => {
 });
 ```
 
-### Routing
+#### Routing 
 
 All route handlers should be in `src/server/routes`. The file name determines the URL path for the route handler.
 E.g. `src/server/routes/login.js` will listen to request coming on `/api/login`. 
@@ -104,7 +148,7 @@ Example:
 ```javascript
 // users.js
 module.exports = {
-    "POST /address": (req, res) => { // will listen to POST requests coming on "/api/users/address"
+    "POST /address": async (req, res) => { // will listen to POST requests coming on "/api/users/address"
         // ...
         res.send({
             message: "Yeah"
@@ -113,7 +157,7 @@ module.exports = {
 };
 ```
 
-## Features Included
+## Features 😎<a name="features"></a>
 
  - [x] MySQL Database Setup
  - [x] MySQL Database Transaction Rollbacks

@@ -1,5 +1,5 @@
 {
-  "name": "chat-server",
+  "name": "boilerplate-web-app-framework",
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
@@ -10,9 +10,17 @@
     "lint": "eslint src/ --fix",
     "test": "jest"
   },
-  "keywords": [],
-  "author": "",
-  "license": "ISC",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/dobschal/web-app-boilerplate"
+  },
+  "keywords": [
+    "Boilerplate",
+    "Framework",
+    "Javascript"
+  ],
+  "author": "Sascha Dobschal",
+  "license": "Apache-2.0",
   "dependencies": {
     "cors": "^2.8.5",
     "dotenv": "^16.0.3",
@@ -29,6 +37,7 @@
     "eslint": "^7.32.0",
     "eslint-plugin-jest": "^26.9.0",
     "jest": "^27.5.1",
+    "jest-environment-jsdom": "^27.5.1",
     "nodemon": "^2.0.22",
     "parcel-bundler": "^1.12.5"
   }

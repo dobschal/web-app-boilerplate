@@ -260,14 +260,14 @@ function build(config) {
         } else if (typeof text === "function") {
             element.innerText = text();
         }
-        if (Array.isArray(children)) {
-            element.innerHTML = "";
-            element.append(...children.map(child => typeof child === "function" ? child() : child.update()));
-        } else if (typeof children === "function") {
-            element.innerHTML = "";
-            element.append(...children().map(child => typeof child === "function" ? child() : child.update()));
-        }
         setTimeout(() => {
+            if (Array.isArray(children)) {
+                element.innerHTML = "";
+                element.append(...children.map(child => typeof child === "function" ? child() : child.update()));
+            } else if (typeof children === "function") {
+                element.innerHTML = "";
+                element.append(...children().map(child => typeof child === "function" ? child() : child.update()));
+            }
             const event = new Event("update");
             element.dispatchEvent(event);
         });
@@ -276,8 +276,8 @@ function build(config) {
     setTimeout(() => {
         if (element.parentElement) return;
         document.body.append(element);
-        element.update();
     });
+    element.update();
     return element;
 }
 

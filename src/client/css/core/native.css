@@ -1,5 +1,9 @@
 * {
     box-sizing: border-box;
+    animation-name: fade-in;
+    animation-duration: 0.3s;
+    animation-iteration-count: 1;
+    animation-timing-function: ease-out;
 }
 
 body {
@@ -20,6 +24,7 @@ body>* {
     animation-iteration-count: 1;
     animation-timing-function: ease-out;
 }
+
 body>header {
     animation: none;
 }

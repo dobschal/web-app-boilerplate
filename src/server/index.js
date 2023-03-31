@@ -32,6 +32,7 @@ async function setup() {
     const routesDirectory = path.join(__dirname, "routes");
     fs.readdirSync(routesDirectory).forEach((file) => {
         // TODO: clean that up
+        if (file.endsWith(".test.js")) return;
         const routeHandlers = require(path.join(routesDirectory, file));
         Object.keys(routeHandlers).forEach(key => {
             let [httpMethod, path] = key.split(" ");

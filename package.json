@@ -1,7 +1,7 @@
 {
   "name": "boilerplate-web-app-framework",
   "version": "1.0.0",
-  "description": "",
+  "description": "A ready to use javascript boilerplate app.",
   "main": "index.js",
   "scripts": {
     "database": "docker-compose up -d",
@@ -29,11 +29,10 @@
     "mysql": "^2.18.1",
     "nodemailer": "^6.9.1",
     "socket.io": "^4.6.1",
-    "socket.io-client": "^4.6.1",
-    "src": "^1.1.2"
+    "socket.io-client": "^4.6.1"
   },
   "devDependencies": {
-    "concurrently": "^8.0.1",
+    "concurrently": "^6.5.1",
     "eslint": "^7.32.0",
     "eslint-plugin-jest": "^26.9.0",
     "jest": "^27.5.1",

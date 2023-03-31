@@ -2,6 +2,8 @@
 
 👉 This is a boilerplate framework for a web app to be built with NodeJS and MySQL.
 
+[![Tests](https://github.com/dobschal/web-app-boilerplate/actions/workflows/unit-test.yml/badge.svg)](https://github.com/dobschal/web-app-boilerplate/actions/workflows/unit-test.yml)
+
 ## Content 
 1. [Installation](#installation)
 2. [Deployment](#deployment)

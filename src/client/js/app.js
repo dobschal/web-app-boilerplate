@@ -1,18 +1,23 @@
-
-const { isAuthenticated } = require("./core/Auth.js");
-const { HTTP } = require("./core/HTTP.js");
-const { Router } = require("./core/Router.js");
+const {isAuthenticated} = require("./core/Auth.js");
+const {HTTP} = require("./core/HTTP.js");
+const {Router} = require("./core/Router.js");
+const {on} = require("../../shared/util/Event.js");
+const {Storage} = require("./core/Storage.js");
 
 console.log("[app] 🚀 Application started.");
 
 HTTP.baseUrl = window.location.protocol + "//" + window.location.host + "/api";
 
+on("Authenticated", () => {
+    HTTP.jwt = Storage.get("jwt");
+});
+
 Router.beforeEach = async function (path) {
     if (!isAuthenticated() && !["/verify-email", "/login"].includes(path)) {
-        Router.go("/login");
+        await Router.go("/login");
         return false;
     } else if (isAuthenticated() && ["/verify-email", "/login"].includes(path)) {
-        Router.go("/");
+        await Router.go("/");
         return false;
     }
     return true;

@@ -25,3 +25,45 @@
     position: sticky;
     bottom: 0;
 }
+
+.toasts {
+    position: fixed;
+    bottom: 1rem;
+    left: 0;
+    width: 100%;
+    display: flex;
+    max-width: 100%;
+    flex-direction: column;
+}
+
+.toasts>* {
+    margin: 0.5rem auto;
+    width: 100%;
+    max-width: 280px;
+    background-color: black;
+    color: white;
+    border-radius: 0.5rem;
+    padding: 0.25rem 0.5rem;
+    text-align: center;
+    opacity: 0.1;
+    animation-name: slide-fade-in;
+    animation-duration: 0.5s;
+    animation-iteration-count: 1;
+    animation-timing-function: ease-out;
+}
+
+.toasts>*:nth-last-child(4) {
+    opacity: 0.25;
+}
+
+.toasts>*:nth-last-child(3) {
+    opacity: 0.5;
+}
+
+.toasts>*:nth-last-child(2) {
+    opacity: 0.75;
+}
+
+.toasts>*:last-child {
+    opacity: 1;
+}

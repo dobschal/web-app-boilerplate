@@ -21,6 +21,18 @@ if (typeof HTMLElement.prototype.ref === "undefined") {
     };
 }
 
+if (typeof HTMLElement.prototype.add === "undefined") {
+
+    /**
+     * @param  {...HTMLElement} elements
+     * @returns {HTMLElement}
+     */
+    HTMLElement.prototype.add = function (...elements) {
+        this.append(...elements);
+        return this;
+    };
+}
+
 if (typeof HTMLElement.prototype.addStyle === "undefined") {
 
     /**

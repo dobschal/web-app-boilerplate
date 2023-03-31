@@ -1,10 +1,5 @@
-const { on } = require("../../../shared/util/Event.js");
 const { isAuthenticated } = require("./Auth.js");
 const { Storage } = require("./Storage.js");
-
-on("Authenticated", () => {
-    HTTP.jwt = Storage.get("jwt");
-});
 
 const HTTP = {
 
@@ -13,8 +8,34 @@ const HTTP = {
      * @type {string}
      */
     baseUrl: "",
+
+    /**
+     * This depends on two other modules "Auth" and "Storage". You can remove the dependencies and
+     * set this jwt value manually.
+     * @type {string}
+     */
     jwt: isAuthenticated() ? Storage.get("jwt") : "",
 
+    /**
+     * @param {string} url
+     * @param {object} data
+     * @returns {Promise<*>}
+     */
+    async post(url = "", data = {}) {
+        return this._request("POST", url, data);
+    },
+
+    /**
+     * @param {string} url
+     * @returns {Promise<*>}
+     */
+    async get(url = "") {
+        return this._request("GET", url);
+    },
+
+    /**
+     * @returns {object}
+     */
     _getHeaders() {
         return {
             "Content-Type": "application/json",
@@ -22,22 +43,31 @@ const HTTP = {
         };
     },
 
-    async post(url = "", data = {}) {
-        const response = await fetch(this.baseUrl + url, {
-            method: "POST",
-            headers: this._getHeaders(),
-            body: JSON.stringify(data)
-        });
-        // TODO: throw error is status >= 400        
-        return response.json();
-    },
-
-    async get(url = "") {
-        const response = await fetch(this.baseUrl + url, {
-            method: "GET",
+    /**
+     * @param {'POST'|'GET'|'PUT'|'PATCH'|'DELETE'} method
+     * @param {string} url
+     * @param {object} data
+     * @returns {Promise<*>}
+     */
+    async _request(method, url, data = {}) {
+        const options = {
+            method,
             headers: this._getHeaders()
-        });
-        return response.json();
+        };
+        if(method !== "GET" && data) {
+            options.body = JSON.stringify(data);
+        }
+        const rawResponse = await fetch(this.baseUrl + url, options);
+        let response;
+        try {
+            response = await rawResponse.json();
+        } catch (e) {
+            console.warn("[HTTP] Couldn't parse server response to JSON: ", e);
+        }
+        if(rawResponse.status >= 400) {
+            throw response;
+        }
+        return response;
     }
 };
 

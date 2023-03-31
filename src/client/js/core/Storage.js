@@ -8,7 +8,7 @@ module.exports.Storage = {
         if (typeof value === "string") {
             window.localStorage.setItem(key, value);
             window.localStorage.setItem(key + "___type", "string");
-        } else if (Array.isArray(value) || value?.constructor === Object) {
+        } else if (Array.isArray(value) || (value && value.constructor === Object)) {
             window.localStorage.setItem(key, JSON.stringify(value));
             window.localStorage.setItem(key + "___type", "object");
         } else {

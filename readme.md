@@ -74,7 +74,7 @@ To deploy this application, follow these steps:
 * Run `npm install` and `npm run build`
 * Adjust the `.env` to contain the correct credentials to the database and email provider
 * Install PM2 via NPM: `npm install -g pm2`
-* Start the `src/server/index.js` file with PM2
+* Start with PM2 `pm2 start src/server/index.js --name=your_app_name`
 * Get a domain or subdomain
 * Configure Nginx and run `systemctl restart nginx`
 * Open Domain in your browser. Should work :)
@@ -179,16 +179,17 @@ module.exports = {
  - [x] Authorised Routes
  - [x] User authentication websocket
  - [x] Database via Docker Compose
+ - [x] Is Email validator
  - [ ] User role util 
  - [ ] K6 stress tests
  - [ ] Path variables in URL
  - [ ] Localisation
  - [ ] Request Limiter
- - [ ] Is Email validator
- - [ ] Deployment with PM2
+ - [x] Deployment with PM2
  - [ ] PM2 Load Balancing
  - [ ] PM2 Load Balancing with Websockets
  - [ ] Better Unit Tests Coverage
+ - [ ] HTML Emails
  
 
  - [x] Server/Client Shared Modules
@@ -205,7 +206,7 @@ module.exports = {
  - [ ] Declarative UI Framework Image
  - [ ] Declarative UI Framework TextEditor
  - [ ] Dialog
- - [ ] Toast
+ - [x] Toast
  - [x] Client Side Router
  - [x] Client Side Router Params
  - [x] Client Side Router BeforeEach Guard

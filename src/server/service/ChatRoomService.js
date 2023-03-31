@@ -43,7 +43,8 @@ module.exports.ChatRoomService = {
             SELECT COUNT(*) as amount
             FROM chat_room cr
                      JOIN chat_room_user cru on cr.id = cru.chat_room_id
-            WHERE cru.user_id = ? AND cr.id = ?
+            WHERE cru.user_id = ?
+              AND cr.id = ?
         `, [userId, chatRoomId]);
         return amount === 1;
     },
@@ -58,6 +59,16 @@ module.exports.ChatRoomService = {
     },
 
     async getMessages(chatRoomId) {
-        return await query("SELECT * FROM message WHERE chat_room_id = ?", [chatRoomId]);
+        return await query(`
+            SELECT m.id         as id,
+                   m.content    as content,
+                   m.created_at as createdAt,
+                   m.type       as type,
+                   u.email      as userEmail,
+                   u.id         as userId
+            FROM message m
+                     JOIN user u ON u.id = m.sender_id
+            WHERE chat_room_id = ?
+        `, [chatRoomId]);
     }
 };

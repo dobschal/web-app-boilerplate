@@ -1,28 +1,37 @@
 const {Router} = require("../core/Router.js");
-const {Box, TextBlock, Input, Form, SubmitButton, List, ListItem, refs} = require("../core/UI.js");
-const {Header} = require("../partials/Header.js");
+const {Box, Input, Form, SubmitButton, List, refs, Headline, Header} = require("../core/UI.js");
 const {HTTP} = require("../core/HTTP.js");
+const {IconButton} = require("../partials/IconButton.js");
+const {logout} = require("../core/Auth.js");
+const {ChatBubble} = require("../partials/ChatBubble.js");
 
 const data = {
     messages: []
 };
 
+Header(
+    IconButton("/icons/home.svg", () => Router.go("/")),
+    Headline(() => "Chat #" + Router.params.id),
+    IconButton("/icons/logout.svg", logout)
+);
 Box(
-    Header(() => "Chat " + Router.params.id),
-    TextBlock("Write a message!"),
+    List(() => data.messages.map(ChatBubble))
+        .ref("messages"),
     Form(
         Input("Message").setFocus(),
         SubmitButton("Send"),
         ({message}) => _sendMessage(message)
-    ),
-    List(() => data.messages.map(message => ListItem(message.content))).ref("list")
+    ).addStyle("stick-bottom", "inline-form", "bg-white", "py1")
 ).on("update", _loadMessages);
 
+/** Functions **/
+
 async function _loadMessages() {
+    refs.messages.addStyle("loading");
+    data.messages = [];
     const response = await HTTP.get("/chats/messages?chat_room_id=" + Router.params.id);
     data.messages = response.messages;
-    console.log("Messages: ", data.messages, Router.params.id);
-    refs.list.update();
+    refs.messages.removeStyle("loading").update();
 }
 
 async function _sendMessage(message) {

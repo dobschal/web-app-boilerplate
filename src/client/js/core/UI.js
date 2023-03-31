@@ -1,4 +1,4 @@
-const { Router } = require("./Router.js");
+const {Router} = require("./Router.js");
 
 /**
  * @typedef {object} BuildConfig
@@ -24,11 +24,13 @@ if (typeof HTMLElement.prototype.ref === "undefined") {
 if (typeof HTMLElement.prototype.addStyle === "undefined") {
 
     /**
-     * @param  {...string} classNames 
+     * @param  {...string} classNames
      * @returns {HTMLElement}
      */
     HTMLElement.prototype.addStyle = function (...classNames) {
-        classNames.forEach((className) => this.classList.add(className));
+        classNames
+            .filter(name => Boolean(name))
+            .forEach((className) => this.classList.add(className));
         return this;
     };
 }
@@ -36,7 +38,7 @@ if (typeof HTMLElement.prototype.addStyle === "undefined") {
 if (typeof HTMLElement.prototype.removeStyle === "undefined") {
 
     /**
-     * @param  {...string} classNames 
+     * @param  {...string} classNames
      * @returns {HTMLElement}
      */
     HTMLElement.prototype.removeStyle = function (...classNames) {
@@ -48,8 +50,8 @@ if (typeof HTMLElement.prototype.removeStyle === "undefined") {
 if (typeof HTMLElement.prototype.on === "undefined") {
 
     /**
-     * @param {string} eventName 
-     * @param {(Event) => void)} callback 
+     * @param {string} eventName
+     * @param {(Event) => void)} callback
      * @returns {HTMLElement}
      */
     HTMLElement.prototype.on = function (eventName, callback) {
@@ -66,16 +68,19 @@ if (typeof HTMLElement.prototype.on === "undefined") {
 }
 
 /**
- * @param {BuildConfig|HTMLElement|() => HTMLElement} config 
- * @param  {...HTMLElement|() => HTMLElement} children 
+ * @param {HTMLElement} children
  * @returns {HTMLDivElement}
  */
-function Box(config, ...children) {
-    if (config instanceof HTMLElement || typeof config === "function") {
-        children.unshift(config);
-        config = {};
-    }
-    return build({ children, ...config });
+function Box(...children) {
+    return build({children});
+}
+
+/**
+ * @param  {...HTMLElement|function(): HTMLElement} children
+ * @returns {HTMLHeadingElement}
+ */
+function Header(...children) {
+    return build({tag: "header", children});
 }
 
 /**
@@ -239,16 +244,16 @@ function TextBlock(text) {
 
 /**
  * Creates a HTMLElement based on a passed config.
- * 
- * @param {BuildConfig} config 
+ *
+ * @param {BuildConfig} config
  * @returns {HTMLElement}
  */
 function build(config) {
-    const { tag = "div", text, children, ...attributes } = config;
+    const {tag = "div", text, children, ...attributes} = config;
     const element = document.createElement(tag);
     element.update = () => {
         Object.keys(attributes).forEach(
-            _handleBuildAttribute.bind({ element, attributes })
+            _handleBuildAttribute.bind({element, attributes})
         );
         if (typeof text === "string") {
             element.innerText = text;
@@ -269,7 +274,7 @@ function build(config) {
         return element;
     };
     setTimeout(() => {
-        if(element.parentElement) return;
+        if (element.parentElement) return;
         document.body.append(element);
         element.update();
     });
@@ -310,6 +315,7 @@ module.exports = {
     build,
     Form,
     Headline,
+    Header,
     Image,
     InlineText,
     Input,

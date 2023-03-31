@@ -1,3 +1,5 @@
 @import url("./core/animation.css");
 @import url("./core/native.css");
-@import url("./IconButton.css");
+@import url("./core/custom.css");
+@import url("./partials/IconButton.css");
+@import url("./partials/ChatBubble.css");

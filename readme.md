@@ -166,8 +166,9 @@ module.exports = {
  - [x] Login UI
  - [x] Event Bus
  - [x] Button with Loading State
- - [ ] Example Chat App
- - [ ] Page transition animation
+ - [x] Example Chat App
+ - [ ] Chat App Websocket
+ - [x] Page transition animation
  - [ ] Custom Font
  - [ ] Better Unit Tests Coverage
 

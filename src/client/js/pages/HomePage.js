@@ -1,16 +1,20 @@
 const {HTTP} = require("../core/HTTP.js");
 const {Router} = require("../core/Router.js");
-const {Box, Input, List, ListItem, refs} = require("../core/UI.js");
-const {Header} = require("../partials/Header.js");
-const {getJwtContent} = require("../core/Auth.js");
+const {Box, Input, List, ListItem, refs, Headline, Header} = require("../core/UI.js");
+const {getJwtContent, logout} = require("../core/Auth.js");
+const {IconButton} = require("../partials/IconButton.js");
 
 const data = {
     users: []
 };
 
+Header(
+    IconButton("/icons/home.svg", () => Router.go("/")),
+    Headline(() => "Users"),
+    IconButton("/icons/logout.svg", logout)
+);
 Box(
-    Header("Find a user to chat with"),
-    Input("Query").on("value", _loadUsers),
+    Input("Find user", "query").on("value", _loadUsers),
     List(_buildListItem).ref("list")
 ).on("update", () => _loadUsers());
 

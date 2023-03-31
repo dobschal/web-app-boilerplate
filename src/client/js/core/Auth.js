@@ -15,4 +15,8 @@ function getJwtContent() {
     return JSON.parse(atob(content));
 }
 
-module.exports = { isAuthenticated, logout, getJwtContent };
+function getCurrentUserClaim(claim) {
+    return (getJwtContent() ?? {})[claim];
+}
+
+module.exports = { isAuthenticated, logout, getJwtContent, getCurrentUserClaim };

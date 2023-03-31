@@ -1,0 +1,49 @@
+.chat-bubble {
+    background-color: white;
+    border: solid 1px black;
+    border-radius: 1rem;
+    padding: 1rem;
+    width: 76%;
+    margin-bottom: 1rem;
+    position: relative;
+}
+
+.chat-bubble.own-message {
+    background-color: black;
+    border-radius: 1rem;
+    padding: 1rem;
+    width: 76%;
+    margin-left: 24%;
+    color: white;
+    margin-bottom: 1rem;
+}
+
+.chat-bubble::after {
+    content: "yeah";
+    display: block;
+    border: solid 15px transparent;
+    border-top-color: black;
+    position: absolute;
+    bottom: -16px;
+    left: -16px;
+    font-size: 0;
+    line-height: 0;
+    transform: rotate(45deg);
+}
+
+.chat-bubble.own-message::after {
+    left: auto;
+    right: -16px;
+    transform: rotate(-45deg);
+    border-top-color: #EFEFEF;
+}
+
+.chat-bubble h3 {
+    margin: 0;
+    font-size: 0.75rem;
+    font-weight: 400;
+}
+
+.chat-bubble p {
+    margin: 0;
+}

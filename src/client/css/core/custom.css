@@ -1,0 +1,27 @@
+.bg-white {
+    background-color: white;
+}
+
+.inline-form {
+    display: flex;
+    flex-direction: row;
+}
+
+.inline-form>* {
+    margin: 0 1rem 0 0;
+}
+.inline-form>*:last-child {
+    margin-right: 0;
+}
+
+.py1 {
+    padding: 1rem 0;
+}
+.p1 {
+    padding: 1rem;
+}
+
+.stick-bottom {
+    position: sticky;
+    bottom: 0;
+}

@@ -15,6 +15,13 @@ body>* {
     margin: auto;
     width: 100%;
     max-width: 640px;
+    animation-name: slide-fade-in;
+    animation-duration: 0.3s;
+    animation-iteration-count: 1;
+    animation-timing-function: ease-out;
+}
+body>header {
+    animation: none;
 }
 
 button {
@@ -58,6 +65,13 @@ form.loading button::after {
     animation-duration: 1s;
     animation-iteration-count: infinite;
     animation-timing-function: ease-in-out;
+}
+
+header {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
 }
 
 input {

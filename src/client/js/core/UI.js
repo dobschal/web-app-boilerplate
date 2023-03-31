@@ -58,7 +58,7 @@ if (typeof HTMLElement.prototype.on === "undefined") {
         if (eventName === "value") {
             this.addEventListener(
                 "input",
-                (event) => callback(event.target?.value)
+                (event) => callback(event.target && event.target.value)
             );
             return this;
         }
@@ -138,7 +138,7 @@ function Input(label, name, type = "text") {
     const el = build({
         tag: "input",
         type,
-        name: name ?? label.toLowerCase(),
+        name: name || label.toLowerCase(),
         placeholder: label
     });
     el.setRequired = function () {
@@ -297,7 +297,7 @@ function _handleBuildAttribute(key) {
         if (key.toLowerCase() === "onvalue") {
             this.element.addEventListener(
                 "input",
-                (event) => this.attributes[key](event.target?.value)
+                (event) => this.attributes[key](event.target && event.target.value)
             );
             return;
         }

@@ -15,5 +15,5 @@ module.exports.ChatBubble = function (message) {
     ).addStyle(
         "chat-bubble",
         isOwnMessage ? "own-message" : ""
-    );
+    ).ref(message.id);
 };

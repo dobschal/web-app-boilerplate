@@ -1,5 +1,6 @@
 const { isAuthenticated } = require("./Auth.js");
 const { Storage } = require("./Storage.js");
+const {on} = require("../../../shared/util/Event.js");
 
 const HTTP = {
 
@@ -14,7 +15,20 @@ const HTTP = {
      * set this jwt value manually.
      * @type {string}
      */
-    jwt: isAuthenticated() ? Storage.get("jwt") : "",
+    jwt: "",
+
+    /**
+     * @param {string} baseUrl
+     */
+    init(baseUrl) {
+        this.baseUrl = baseUrl;
+        if(isAuthenticated()) {
+            this.jwt = Storage.get("jwt");
+        }
+        on("Authenticated", () => {
+            HTTP.jwt = Storage.get("jwt");
+        });
+    },
 
     /**
      * @param {string} url

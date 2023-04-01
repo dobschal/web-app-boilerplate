@@ -70,5 +70,16 @@ module.exports.ChatRoomService = {
                      JOIN user u ON u.id = m.sender_id
             WHERE chat_room_id = ?
         `, [chatRoomId]);
-    }
+    },
+
+    async getUsersOfChatRoom(chatRoomId) {
+        const results = await query(`
+            SELECT u.*
+            FROM chat_room cr
+                     JOIN chat_room_user cru ON cr.id = cru.chat_room_id
+                     JOIN user u ON u.id = cru.user_id
+            WHERE cr.id = ?
+        `, [chatRoomId]);
+        return results;
+    },
 };

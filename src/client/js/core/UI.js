@@ -17,6 +17,7 @@ if (typeof HTMLElement.prototype.ref === "undefined") {
      */
     HTMLElement.prototype.ref = function (name) {
         refs[name] = this;
+        this.setAttribute("ref", name);
         return this;
     };
 }
@@ -264,26 +265,22 @@ function build(config) {
     const {tag = "div", text, children, ...attributes} = config;
     const element = document.createElement(tag);
     element.update = () => {
-        Object.keys(attributes).forEach(
-            _handleBuildAttribute.bind({element, attributes})
-        );
-        if (typeof text === "string") {
-            element.innerText = text;
-        } else if (typeof text === "function") {
-            element.innerText = text();
-        }
-        setTimeout(() => {
-            if (Array.isArray(children)) {
-                element.innerHTML = "";
-                element.append(...children.map(child => typeof child === "function" ? child() : child.update()));
-            } else if (typeof children === "function") {
-                element.innerHTML = "";
-                element.append(...children().map(child => typeof child === "function" ? child() : child.update()));
+        return new Promise((resolve) => {
+            Object.keys(attributes).forEach(
+                _handleBuildAttribute.bind({element, attributes})
+            );
+            if (typeof text === "string") {
+                element.innerText = text;
+            } else if (typeof text === "function") {
+                element.innerText = text();
             }
-            const event = new Event("update");
-            element.dispatchEvent(event);
+            setTimeout(() => {
+                _updateChildren(element, children);
+                const event = new Event("update");
+                element.dispatchEvent(event);
+                setTimeout(() => resolve(element));
+            });
         });
-        return element;
     };
     setTimeout(() => {
         if (element.parentElement) return;
@@ -291,6 +288,31 @@ function build(config) {
     });
     element.update();
     return element;
+}
+
+/**
+ * If children, is a function, execute the function to retrieve the array of HTMLElements.
+ * Compare the HTMLElements with the ones added to DOM. Replace, remove, add.
+ *
+ * @param {HTMLElement} element
+ * @param {Array<HTMLElement|(() => HTMLElement)>|(() => Array<HTMLElement|(() => HTMLElement)>)} [children]
+ */
+function _updateChildren(element, children) {
+    if(!children) return;
+    if (typeof children === "function") {
+        children = children();
+    }
+    if (!Array.isArray(children)) {
+        return console.error("[UI] Expect children to be array or function that returns an array of HTMLElements.");
+    }
+    element.innerHTML = "";
+    element.append(...children.map(child => {
+        if(typeof child === "function") {
+            return child();
+        }
+        child.update();
+        return child;
+    }));
 }
 
 /**

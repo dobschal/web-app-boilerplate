@@ -26,7 +26,7 @@ function init(_io) {
 }
 
 function sendToUser(email, eventName, data) {
-    if (userConnections[email]) return;
+    if (!userConnections[email]) return;
     userConnections[email].emit(eventName, data);
 }
 

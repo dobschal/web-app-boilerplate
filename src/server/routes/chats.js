@@ -2,6 +2,7 @@ const { expectType } = require("../core/type.js");
 const { AuthService } = require("../service/AuthService.js");
 const { ChatRoomService } = require("../service/ChatRoomService.js");
 const { UserService } = require("../service/UserService.js");
+const {sendToUser} = require("../core/websocket.js");
 
 module.exports = {
     "POST /open": async (req, res) => {
@@ -37,6 +38,13 @@ module.exports = {
             throw new Error("403 Not in chat.");
         }
         await ChatRoomService.insertMessage(req.user.id, req.body.chatRoomId, req.body.message);
+        const users = await ChatRoomService.getUsersOfChatRoom(req.body.chatRoomId);
+        users.forEach(user => sendToUser(user.email, "message", {
+            chatRoomId: req.body.chatRoomId,
+            userId: req.user.id,
+            userEmail: req.user.email,
+            message: req.body.message
+        }));
         res.send({
             success: true
         });

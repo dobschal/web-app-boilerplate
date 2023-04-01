@@ -15,7 +15,7 @@ body {
     flex-direction: column;
 }
 
-body>* {
+body > * {
     margin: auto;
     width: 100%;
     max-width: 640px;
@@ -25,7 +25,7 @@ body>* {
     animation-timing-function: ease-out;
 }
 
-body>header {
+body > header {
     animation: none;
 }
 
@@ -77,6 +77,11 @@ header {
     flex-direction: row;
     align-items: center;
     justify-content: space-between;
+    border-bottom: solid 2px black;
+    position: sticky;
+    top: 0;
+    background-color: white;
+    z-index: 1;
 }
 
 input {

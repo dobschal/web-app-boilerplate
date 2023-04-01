@@ -21,15 +21,13 @@ Box(
     Form(
         Input("Message").setFocus(),
         SubmitButton("Send"),
-        ({message}) => _sendMessage(message))
-        .addStyle("stick-bottom", "inline-form", "bg-white", "py1"))
-    .on("update", _loadMessages)
-    .addStyle("page");
+        ({message}) => _sendMessage(message)
+    ).addStyle("stick-bottom", "inline-form", "bg-white", "py1")
+).on("update", _loadMessages);
 
 /** Websocket **/
 
 Websocket.listen("message", async ({chatRoomId}) => {
-    console.log("Got new message: ", chatRoomId);
     if (chatRoomId === Number(Router.params.id)) {
         await _loadMessages();
     }
@@ -44,10 +42,6 @@ async function _loadMessages() {
     data.messages = response.messages;
     await refs.messages.removeStyle("loading").update();
     _scrollToPageBottom();
-    // TODO: Scroll to bottom
-
-    // TODO: Do not reload/rebuild every message build on load
-
 }
 
 function _scrollToPageBottom() {

@@ -180,6 +180,8 @@ module.exports = {
  - [x] User authentication websocket
  - [x] Database via Docker Compose
  - [x] Is Email validator
+ - [ ] File Upload
+ - [ ] Secure GET file route
  - [ ] User role util 
  - [ ] K6 stress tests
  - [ ] Path variables in URL
@@ -196,14 +198,13 @@ module.exports = {
  - [ ] DateUtil
  - [ ] esdocs types
 
- - [ ] Frontend Unit Tests
- - [ ] Have onAdd to dom event
+ - [x] Frontend Unit Tests
  - [x] Declarative UI Framework 
  - [x] Declarative UI Framework List
  - [ ] Declarative UI Framework File Input
  - [ ] Declarative UI Framework Select/Options
  - [ ] Declarative UI Framework Table
- - [ ] Declarative UI Framework Image
+ - [x] Declarative UI Framework Image
  - [ ] Declarative UI Framework TextEditor
  - [ ] Dialog
  - [x] Toast
@@ -214,7 +215,7 @@ module.exports = {
  - [x] Event Bus
  - [x] Button with Loading State
  - [x] Example Chat App
- - [ ] Chat App Websocket
+ - [x] Chat App Websocket
  - [x] Page transition animation
  - [ ] Custom Font
  - [ ] Better Unit Tests Coverage

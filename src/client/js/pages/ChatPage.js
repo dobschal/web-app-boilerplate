@@ -1,10 +1,10 @@
-const {Router} = require("../core/Router.js");
-const {Box, Input, Form, SubmitButton, List, refs, Headline, Header} = require("../core/UI.js");
-const {HTTP} = require("../core/HTTP.js");
-const {IconButton} = require("../partials/IconButton.js");
-const {logout} = require("../core/Auth.js");
-const {ChatBubble} = require("../partials/ChatBubble.js");
-const {Websocket} = require("../core/Websocket.js");
+const { Router } = require("../core/Router.js");
+const { Box, Input, Form, SubmitButton, List, refs, Headline, Header } = require("../core/UI.js");
+const { HTTP } = require("../core/HTTP.js");
+const { IconButton } = require("../partials/IconButton.js");
+const { logout } = require("../core/Auth.js");
+const { ChatBubble } = require("../partials/ChatBubble.js");
+const { Websocket } = require("../core/Websocket.js");
 
 const data = {
     messages: []
@@ -17,17 +17,18 @@ Header(
 );
 Box(
     List(() => data.messages.map(ChatBubble))
-        .ref("messages"),
+        .ref("messages")
+        .addStyle("min-height-80"),
     Form(
         Input("Message").setFocus(),
         SubmitButton("Send"),
-        ({message}) => _sendMessage(message)
+        ({ message }) => _sendMessage(message)
     ).addStyle("stick-bottom", "inline-form", "bg-white", "py1")
 ).on("update", _loadMessages);
 
 /** Websocket **/
 
-Websocket.listen("message", async ({chatRoomId}) => {
+Websocket.listen("message", async ({ chatRoomId }) => {
     if (chatRoomId === Number(Router.params.id)) {
         await _loadMessages();
     }
@@ -36,11 +37,10 @@ Websocket.listen("message", async ({chatRoomId}) => {
 /** Functions **/
 
 async function _loadMessages() {
-    refs.messages.addStyle("loading");
     data.messages = [];
     const response = await HTTP.get("/chats/messages?chat_room_id=" + Router.params.id);
     data.messages = response.messages;
-    await refs.messages.removeStyle("loading").update();
+    await refs.messages.update();
     _scrollToPageBottom();
 }
 

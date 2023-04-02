@@ -31,6 +31,15 @@ module.exports.Router = {
         return queryParams;
     },
 
+    _delayed(duration, callback) {
+        return new Promise(resolve => {
+            setTimeout(async () => {
+                const result = await callback();
+                resolve(result);
+            }, duration);
+        });
+    },
+
 
     // TODO: clean up
 
@@ -38,45 +47,49 @@ module.exports.Router = {
         if (typeof this.activeRoute !== "undefined") {
             this.cache[this.activeRoute] = [...document.body.children];
         }
-        document.body.innerHTML = "";
-        let route = "*";
-        let [pathWithoutQuery, query] = path.split("?");
-        if (pathWithoutQuery.endsWith("/")) pathWithoutQuery = pathWithoutQuery.slice(0, -1);
-        this.rawQuery = query;
-        this.params = {};
-        Object.keys(this.routes).forEach(routeName => {
-            const pathParts = pathWithoutQuery.split("/");
-            const routeNameParts = routeName.split("/");
-            if (pathParts.length !== routeNameParts.length) return;
-            for (let i = 0; i < pathParts.length; i++) {
-                if (routeNameParts[i].startsWith("{") && routeNameParts[i].endsWith("}")) {
-                    const paramName = routeNameParts[i].slice(1, -1);
-                    this.params[paramName] = pathParts[i];
-                    continue;
+        document.body.classList.add("leave");
+        this._delayed(300, async () => {
+            document.body.innerHTML = "";
+            document.body.classList.remove("leave");
+            let route = "*";
+            let [pathWithoutQuery, query] = path.split("?");
+            if (pathWithoutQuery.endsWith("/")) pathWithoutQuery = pathWithoutQuery.slice(0, -1);
+            this.rawQuery = query;
+            this.params = {};
+            Object.keys(this.routes).forEach(routeName => {
+                const pathParts = pathWithoutQuery.split("/");
+                const routeNameParts = routeName.split("/");
+                if (pathParts.length !== routeNameParts.length) return;
+                for (let i = 0; i < pathParts.length; i++) {
+                    if (routeNameParts[i].startsWith("{") && routeNameParts[i].endsWith("}")) {
+                        const paramName = routeNameParts[i].slice(1, -1);
+                        this.params[paramName] = pathParts[i];
+                        continue;
+                    }
+                    if (pathParts[i] !== routeNameParts[i]) return;
                 }
-                if (pathParts[i] !== routeNameParts[i]) return;
+                route = routeName;
+            });
+            if (typeof this.beforeEach === "function") {
+                const result = await this.beforeEach(route);
+                if (!result) return;
             }
-            route = routeName;
+            this.activeRoute = route;
+            if (pushState) {
+                window.history.pushState({}, "", route === "*" ? "/" : path);
+            }
+            if (this.cache[this.activeRoute]) {
+                console.log("[Router] Use cached HTMLelements: ", this.activeRoute, this.cache[this.activeRoute]);
+                document.body.append(...this.cache[this.activeRoute]);
+                for (let child of document.body.children) {
+                    if (typeof child.update !== "function") continue;
+                    console.log("[Router] Update page on reopen: ", child);
+                    child.update();
+                }
+            } else {
+                console.log("[Router] Import page module: ", this.activeRoute);
+                await this.routes[this.activeRoute]();
+            }
         });
-        if (typeof this.beforeEach === "function") {
-            const result = await this.beforeEach(route);
-            if (!result) return;
-        }
-        this.activeRoute = route;
-        if (pushState) {
-            window.history.pushState({}, "", route === "*" ? "/" : path);
-        }
-        if (this.cache[this.activeRoute]) {
-            console.log("[Router] Use cached HTMLelements: ", this.activeRoute, this.cache[this.activeRoute]);
-            document.body.append(...this.cache[this.activeRoute]);
-            for (let child of document.body.children) {
-                if (typeof child.update !== "function") continue;
-                console.log("[Router] Update page on reopen: ", child);
-                child.update();
-            }
-        } else {
-            console.log("[Router] Import page module: ", this.activeRoute);
-            await this.routes[this.activeRoute]();
-        }
     }
 };

@@ -10,13 +10,28 @@
 .inline-form>* {
     margin: 0 1rem 0 0;
 }
+
 .inline-form>*:last-child {
     margin-right: 0;
+}
+
+.leave {
+    transition: opacity 0.3s ease-in-out;
+    opacity: 0;
+}
+
+.min-height-100 {
+    min-height: 100vh;
+}
+
+.min-height-80 {
+    min-height: 80vh;
 }
 
 .py1 {
     padding: 1rem 0;
 }
+
 .p1 {
     padding: 1rem;
 }
@@ -50,6 +65,10 @@
     animation-duration: 0.5s;
     animation-iteration-count: 1;
     animation-timing-function: ease-out;
+}
+
+.toasts>*.error {
+    background-color: rgb(193, 0, 0);
 }
 
 .toasts>*:nth-last-child(4) {
